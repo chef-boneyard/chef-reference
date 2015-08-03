@@ -1,0 +1,7 @@
+name 'chef-reference'
+maintainer 'Chef Software, Inc.'
+maintainer_email 'eng-services@chef.io'
+license 'apache2'
+description 'Installs/Configures chef-reference'
+long_description 'Installs/Configures chef-reference'
+version '0.1.0'
