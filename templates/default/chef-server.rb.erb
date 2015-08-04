@@ -1,0 +1,34 @@
+topology '<%= @chef_server_config['topology'] %>'
+api_fqdn '<%= @chef_server_config['api_fqdn'] %>'
+
+# Analytics configuration
+dark_launch['actions'] = <%= @chef_server_config['dark_launch']['actions'] %>
+<% if @chef_server_config.has_key?('vips') -%>
+<%   @chef_server_config['vips'].each do |vip_name, vip_add| -%>
+<%=    vip_name %>['vip'] = '<%= vip_add %>'
+<%   end -%>
+<% end -%>
+<% if @chef_server_config.has_key?('rabbitmq') && @chef_server_config['rabbitmq'].has_key?('node_ip_address') -%>
+rabbitmq['node_ip_address'] = '<%= @chef_server_config['rabbitmq']['node_ip_address'] %>'
+<% end -%>
+
+oc_id['applications'] = {
+  'analytics' => {
+    'redirect_uri' => 'https://<%= @chef_server_config['analytics_fqdn'] %>'
+  }
+}
+
+# Server blocks
+<% @chef_servers.each do |server| -%>
+server '<%= server[:fqdn] %>',
+  :ipaddress => '<%= server[:ipaddress] %>',
+  <% if server[:bootstrap] -%>
+  :bootstrap => true,
+  <% end -%>
+  :role => '<%= server[:role] %>'
+<%   if server[:role] == 'backend' -%>
+backend_vip '<%= server[:fqdn] %>',
+  :ipaddress => '<%= server[:ipaddress] %>'
+<%   end -%>
+
+<% end -%>
