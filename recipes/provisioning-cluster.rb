@@ -27,8 +27,8 @@ directory '/tmp/stash' do
 end
 
 machine 'bootstrap-backend' do
-  recipe 'chef-reference::bootstrap'
   action :converge
+  chef_config "use_policyfile true\nversioned_cookbooks true\npolicy_group 'reference'\npolicy_name 'bootstrap-backend'"
   converge true
 end
 
@@ -49,7 +49,7 @@ end
 end
 
 machine 'frontend' do
-  recipe 'chef-reference::frontend'
+  chef_config "use_policyfile true\nversioned_cookbooks true\npolicy_group 'reference'\npolicy_name 'frontend'"
   action :converge
   converge true
   files(
@@ -60,7 +60,7 @@ machine 'frontend' do
 end
 
 machine 'analytics' do
-  recipe 'chef-reference::analytics'
+  chef_config "use_policyfile true\nversioned_cookbooks true\npolicy_group 'reference'\npolicy_name 'analytics'"
   action :converge
   converge true
   files(

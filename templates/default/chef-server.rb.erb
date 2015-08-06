@@ -20,15 +20,15 @@ oc_id['applications'] = {
 
 # Server blocks
 <% @chef_servers.each do |server| -%>
-server '<%= server[:fqdn] %>',
-  :ipaddress => '<%= server[:ipaddress] %>',
-  <% if server[:bootstrap] -%>
+server '<%= server['fqdn'] %>',
+  :ipaddress => '<%= server['ipaddress'] %>',
+  <% if server['bootstrap'] -%>
   :bootstrap => true,
   <% end -%>
-  :role => '<%= server[:role] %>'
-<%   if server[:role] == 'backend' -%>
-backend_vip '<%= server[:fqdn] %>',
-  :ipaddress => '<%= server[:ipaddress] %>'
+  :role => '<%= server['role'] %>'
+<%   if server['role'] == 'backend' -%>
+backend_vip '<%= server['fqdn'] %>',
+  :ipaddress => '<%= server['ipaddress'] %>'
 <%   end -%>
 
 <% end -%>

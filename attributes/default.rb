@@ -56,12 +56,24 @@ default['chef']['provisioning'].tap do |provisioning|
   # these use _ instead of - because it maps to the machine_options in
   # chef-provisioning-aws, our default provisioning driver.
   provisioning['machine_options'] = {
-    'ssh_username' => 'root',
+    'ssh_username' => 'ec2-user',
     'use_private_ip_for_ssh' => false,
     'bootstrap_options' => {
       'key_name' => 'chef-reference-arch',
-      'image_id' => 'ami-99bef1a9',
+      # https://aws.amazon.com/marketplace/pp/B00VIMU19E, us-west-2 region
+      'image_id' => 'ami-4dbf9e7d',
       'instance_type' => 'm3.medium'
     }
   }
 end
+
+# Even though we're on EL 7, we want EL 6 because some packages aren't
+# released for EL 7 yet. We will change to current when everything is
+# released there for EL 7.
+#
+# default['yum-chef']['repositoryid'] = 'chef-current'
+default['yum-chef']['baseurl'] = 'https://packagecloud.io/chef/stable/el/6/$basearch'
+
+# Set up current channel for Ubuntu.
+default['apt-chef']['repo_name'] = 'chef-current'
+default['apt-chef']['uri'] = 'https://packagecloud.io/chef/current/ubuntu/'

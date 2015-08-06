@@ -32,18 +32,14 @@ reporting_secrets = Hash[data_bag_item('secrets', "opscode-reporting-secrets-#{n
 chef_server_config = data_bag_item('chef_server', 'topology').to_hash
 chef_server_config.delete('id')
 
-# If we didn't get search results, then populate with ourself (we're
-# bootstrapping after all)
-if chef_servers.empty?
-  chef_servers = [
-    {
-      fqdn: node['fqdn'],
-      ipaddress: node['ipaddress'],
-      bootstrap: true,
-      role: 'backend'
-    }
-  ]
-end
+chef_servers = [
+  {
+    'fqdn' => node['fqdn'],
+    'ipaddress' => node['ipaddress'],
+    'bootstrap' => true,
+    'role' => 'backend'
+  }
+]
 
 chef_server_config['vips'] = { 'rabbitmq' => node['ipaddress'] }
 chef_server_config['rabbitmq'] = { 'node_ip_address' => '0.0.0.0' }
@@ -96,6 +92,6 @@ file '/etc/opscode/pivotal.pem' do
   subscribes :create, 'chef_ingredient[chef-server]', :immediately
 end
 
-chef_ingredient 'opscode-reporting' do
+chef_ingredient 'reporting' do
   notifies :reconfigure, 'chef_ingredient[reporting]'
 end

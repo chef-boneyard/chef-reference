@@ -16,7 +16,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-include_recipe 'chef-reference'
+include_recipe 'chef-reference::chef-server'
 
 node.default['chef']['chef-server']['role'] = 'frontend'
 
@@ -30,14 +30,34 @@ reporting_secrets = Hash[data_bag_item('secrets', "opscode-reporting-secrets-#{n
 chef_server_config = data_bag_item('chef_server', 'topology').to_hash
 chef_server_config.delete('id')
 
+chef_servers = search( # ~FC003
+  'node',
+  'chef_chef-server_role:backend',
+  filter_result: {
+    'fqdn' => ['fqdn'],
+    'ipaddress' => ['ipaddress'],
+    'bootstrap' => ['chef', 'chef-server', 'bootstrap', 'enable'],
+    'role' => ['chef', 'chef-server', 'role']
+  }
+)
+
 chef_servers << {
-  fqdn: node['fqdn'],
-  ipaddress: node['ipaddress'],
-  bootstrap: false,
-  role: 'frontend'
+  'fqdn' => node['fqdn'],
+  'ipaddress' => node['ipaddress'],
+  'bootstrap' => false,
+  'role' => 'frontend'
 }
 
 node.default['chef']['chef-server'].merge!(chef_server_config)
+
+# TODO: remove after https://github.com/chef/chef-server/pull/465 is released
+# IPV6 hack - avoid having oc_id listen on ipv6 address by removing the entry
+# for localhost in /etc/hosts.
+delete_lines 'Remove IPV6 localhost' do
+  path '/etc/hosts'
+  pattern '^::1.*'
+end
+# End IPV6 hack
 
 file '/etc/opscode/private-chef-secrets.json' do
   content JSON.pretty_generate(chef_secrets)
@@ -57,10 +77,10 @@ template '/etc/opscode/chef-server.rb' do
   notifies :reconfigure, 'chef_ingredient[chef-server]'
 end
 
-chef_ingredient 'opscode-manage' do
+chef_ingredient 'manage' do
   notifies :reconfigure, 'chef_ingredient[manage]'
 end
 
-chef_ingredient 'opscode-reporting' do
+chef_ingredient 'reporting' do
   notifies :reconfigure, 'chef_ingredient[reporting]'
 end
