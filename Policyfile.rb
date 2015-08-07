@@ -1,12 +1,5 @@
-# Use policyfiles for installing test dependencies
-name 'test-chef-reference'
+name 'chef-reference'
+run_list 'chef-reference::provisioning-cluster'
 default_source :community
 
-# run_list: chef-client will run these recipes in the order specified.
-run_list(
-  'test-chef-reference',
-  'chef-reference'
-)
-
-cookbook cookbook_name, path: '.'
-cookbook 'test-chef-reference', path: './test/fixtures/cookbooks/test-chef-reference'
+cookbook 'chef-reference', path: '.'
