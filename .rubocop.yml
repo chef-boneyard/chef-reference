@@ -8,6 +8,7 @@ AllCops:
     - Policyfile.rb
   Exclude:
     - vendor/**
+    - chef-zero-local/**
 
 AlignParameters:
   Enabled: false

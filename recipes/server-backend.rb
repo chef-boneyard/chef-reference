@@ -1,6 +1,6 @@
 #
 # Cookbook Name:: chef-reference
-# Recipes:: frontend
+# Recipes:: server-backend
 #
 # Copyright (C) 2015, Chef Software, Inc.
 #
@@ -16,9 +16,11 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-include_recipe 'chef-reference::chef-server'
 
-node.default['chef']['chef-server']['role'] = 'frontend'
+include_recipe 'chef-reference::server-setup'
+
+node.default['chef']['chef-server']['role'] = 'backend'
+node.default['chef']['chef-server']['bootstrap']['enable'] = true
 
 # TODO: (jtimberman) chef_vault_item. We sort this so we don't
 # get regenerated content in the private-chef-secrets.json later.
@@ -30,34 +32,19 @@ reporting_secrets = Hash[data_bag_item('secrets', "opscode-reporting-secrets-#{n
 chef_server_config = data_bag_item('chef_server', 'topology').to_hash
 chef_server_config.delete('id')
 
-chef_servers = search( # ~FC003
-  'node',
-  'chef_chef-server_role:backend',
-  filter_result: {
-    'fqdn' => ['fqdn'],
-    'ipaddress' => ['ipaddress'],
-    'bootstrap' => ['chef', 'chef-server', 'bootstrap', 'enable'],
-    'role' => ['chef', 'chef-server', 'role']
+chef_servers = [
+  {
+    'fqdn' => node['fqdn'],
+    'ipaddress' => node['ipaddress'],
+    'bootstrap' => true,
+    'role' => 'backend'
   }
-)
+]
 
-chef_servers << {
-  'fqdn' => node['fqdn'],
-  'ipaddress' => node['ipaddress'],
-  'bootstrap' => false,
-  'role' => 'frontend'
-}
+chef_server_config['vips'] = { 'rabbitmq' => node['ipaddress'] }
+chef_server_config['rabbitmq'] = { 'node_ip_address' => '0.0.0.0' }
 
 node.default['chef']['chef-server'].merge!(chef_server_config)
-
-# TODO: remove after https://github.com/chef/chef-server/pull/465 is released
-# IPV6 hack - avoid having oc_id listen on ipv6 address by removing the entry
-# for localhost in /etc/hosts.
-delete_lines 'Remove IPV6 localhost' do
-  path '/etc/hosts'
-  pattern '^::1.*'
-end
-# End IPV6 hack
 
 file '/etc/opscode/private-chef-secrets.json' do
   content JSON.pretty_generate(chef_secrets)
@@ -75,10 +62,34 @@ template '/etc/opscode/chef-server.rb' do
   source 'chef-server.rb.erb'
   variables chef_server_config: node['chef']['chef-server'], chef_servers: chef_servers
   notifies :reconfigure, 'chef_ingredient[chef-server]'
+  notifies :restart, 'omnibus_service[chef-server/rabbitmq]'
 end
 
-chef_ingredient 'manage' do
-  notifies :reconfigure, 'chef_ingredient[manage]'
+# This is to work around an issue where rabbitmq doesn't always listen
+# on 0.0.0.0 after `reconfigure` despite the configuration above.
+omnibus_service 'chef-server/rabbitmq' do
+  action :nothing
+end
+
+# These two resources set permissions on the files to make them
+# readable as a workaround for
+# https://github.com/opscode/chef-provisioning/issues/174
+file '/etc/opscode-analytics/actions-source.json' do
+  mode 00644
+  subscribes :create, 'chef_ingredient[chef-server]', :immediately
+end
+
+file '/etc/opscode-analytics/webui_priv.pem' do
+  mode 00644
+  subscribes :create, 'chef_ingredient[chef-server]', :immediately
+end
+
+file '/etc/opscode/pivotal.pem' do
+  mode 00644
+  # without this guard, we create an empty file, causing bootstrap to
+  # not actually work, as it checks the presence of this file.
+  only_if { ::File.exist?('/etc/opscode/pivotal.pem') }
+  subscribes :create, 'chef_ingredient[chef-server]', :immediately
 end
 
 chef_ingredient 'reporting' do

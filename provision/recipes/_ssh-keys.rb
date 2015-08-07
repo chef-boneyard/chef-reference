@@ -1,6 +1,6 @@
 #
-# Cookbook Name:: chef-reference
-# Recipes:: setup-ssh-keys
+# Cookbook Name:: provision
+# Recipes:: ssh-keys
 #
 # Copyright (C) 2015, Chef Software, Inc.
 #
@@ -23,9 +23,9 @@
 # we're ready for that. E.g.:
 # ssh_keys = chef_vault_item('vault', node['chef']['provisioning']['key-name'])['data']
 
-ssh_keys = data_bag_item('secrets', node['chef']['provisioning']['key-name'])
+key_name = node['chef']['provisioning']['key-name']
+ssh_keys = data_bag_item('secrets', key_name)
 key_dir  = File.join(Dir.home, '.ssh')
-key_name = node['chef']['provisioning']['machine_options']['bootstrap_options']['key_name']
 
 directory key_dir do
   recursive true

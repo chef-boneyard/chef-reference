@@ -1,6 +1,6 @@
 #
-# Cookbook Name:: chef-reference
-# Recipes:: provisioning-setup
+# Cookbook Name:: provision
+# Recipes:: setup
 #
 # Copyright (C) 2015, Chef Software, Inc.
 #

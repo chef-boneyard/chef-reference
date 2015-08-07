@@ -1,6 +1,6 @@
 #
-# Cookbook Name:: chef-reference
-# Recipes:: provisioning-cleanup
+# Cookbook Name:: provision
+# Recipes:: cleanup
 #
 # Copyright (C) 2015, Chef Software, Inc.
 #
@@ -17,9 +17,9 @@
 # limitations under the License.
 #
 
-include_recipe 'chef-reference::provisioning-setup'
+include_recipe 'provision::_setup'
 
-%w(analytics frontend bootstrap-backend).each do |m|
+%w(analytics server-frontend server-backend).each do |m|
   machine m do
     action :destroy
   end

@@ -1,17 +1,5 @@
-.vagrant
-Berksfile.lock
-*~
-*#
-.#*
-\#*#
-.*.sw[a-z]
-*.un~
+.chef/syntaxcache
+.chef/vms
 
-# Bundler
-Gemfile.lock
-bin/*
-.bundle/*
-
-.kitchen/
-.kitchen.local.yml
-.delivery/cli.toml
+chef-zero-local/
+repo/data_bags/secrets/*.json

@@ -27,7 +27,6 @@
 # node['chef']['delivery']
 # node['chef']['reporting']
 # node['chef']['manage']
-# node['chef']['provisioning']
 
 default['chef']['chef-server'].tap do |server|
   server['topology'] = 'tier'
@@ -35,45 +34,8 @@ default['chef']['chef-server'].tap do |server|
   server['bootstrap']['enable'] = false
 end
 
-default['chef']['provisioning'].tap do |provisioning|
-  # TODO: (jtimberman) We have this here, and then in the machine_options below,
-  # and repetition makes us sad pandas.
-  provisioning['key-name'] = 'chef-reference-arch'
+default['yum-chef']['repositoryid'] = 'chef-current'
+default['yum-chef']['baseurl']      = 'https://packagecloud.io/chef/current/el/7/$basearch'
 
-  # We default to the aws driver, but by overriding this attribute
-  # elsewhere (like a role, or a wrapper cookbook), other drivers should
-  # be usable.
-  provisioning['driver'] = {
-    'gems' => [
-      {
-        'name' => 'chef-provisioning-aws',
-        'require' => 'chef/provisioning/aws_driver'
-      }
-    ],
-    'with-parameter' => 'aws::us-west-2'
-  }
-
-  # these use _ instead of - because it maps to the machine_options in
-  # chef-provisioning-aws, our default provisioning driver.
-  provisioning['machine_options'] = {
-    'ssh_username' => 'ec2-user',
-    'use_private_ip_for_ssh' => false,
-    'bootstrap_options' => {
-      'key_name' => 'chef-reference-arch',
-      # https://aws.amazon.com/marketplace/pp/B00VIMU19E, us-west-2 region
-      'image_id' => 'ami-4dbf9e7d',
-      'instance_type' => 'm3.medium'
-    }
-  }
-end
-
-# Even though we're on EL 7, we want EL 6 because some packages aren't
-# released for EL 7 yet. We will change to current when everything is
-# released there for EL 7.
-#
-# default['yum-chef']['repositoryid'] = 'chef-current'
-default['yum-chef']['baseurl'] = 'https://packagecloud.io/chef/stable/el/6/$basearch'
-
-# Set up current channel for Ubuntu.
-default['apt-chef']['repo_name'] = 'chef-current'
-default['apt-chef']['uri'] = 'https://packagecloud.io/chef/current/ubuntu/'
+default['apt-chef']['repo_name']    = 'chef-current'
+default['apt-chef']['uri']          = 'https://packagecloud.io/chef/current/ubuntu/'
