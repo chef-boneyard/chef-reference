@@ -5,5 +5,10 @@
     "name": "build-cookbook"
   },
   "skip_phases": [],
+  "delivery-truck": {
+    "publish": {
+      "github": "chef-cookbooks/chef-reference"
+    }
+  },
   "build_nodes": {}
 }
