@@ -3,3 +3,4 @@
 
 chef-zero-local/
 repo/data_bags/secrets/*.json
+.delivery/cli.toml
