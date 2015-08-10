@@ -1,6 +1,6 @@
 #
-# Cookbook Name:: chef-reference
-# Recipes:: provisioning-cluster
+# Cookbook Name:: provision
+# Recipes:: cluster
 #
 # Copyright (C) 2015, Chef Software, Inc.
 #
@@ -18,24 +18,24 @@
 #
 # This recipe is run on the provisioner node. It creates all the other nodes using chef-provisioning.
 
-include_recipe 'chef-reference::provisioning-setup'
-include_recipe 'chef-reference::provisioning-ssh-keys'
+include_recipe 'provision::_setup'
+include_recipe 'provision::_ssh-keys'
 
 # we're going to stash files locally with machine_file, keep them in a tempdir
 directory '/tmp/stash' do
   recursive true
 end
 
-machine 'bootstrap-backend' do
+machine 'server-backend' do
+  recipe 'chef-reference::server-backend'
   action :converge
-  chef_config "use_policyfile true\nversioned_cookbooks true\npolicy_group 'reference'\npolicy_name 'bootstrap-backend'"
   converge true
 end
 
 %w(actions-source.json webui_priv.pem).each do |analytics_file|
   machine_file "/etc/opscode-analytics/#{analytics_file}" do
     local_path "/tmp/stash/#{analytics_file}"
-    machine 'bootstrap-backend'
+    machine 'server-backend'
     action :download
   end
 end
@@ -43,13 +43,13 @@ end
 %w(pivotal.pem webui_pub.pem).each do |opscode_file|
   machine_file "/etc/opscode/#{opscode_file}" do
     local_path "/tmp/stash/#{opscode_file}"
-    machine 'bootstrap-backend'
+    machine 'server-backend'
     action :download
   end
 end
 
-machine 'frontend' do
-  chef_config "use_policyfile true\nversioned_cookbooks true\npolicy_group 'reference'\npolicy_name 'frontend'"
+machine 'server-frontend' do
+  recipe 'chef-reference::server-frontend'
   action :converge
   converge true
   files(
@@ -60,7 +60,7 @@ machine 'frontend' do
 end
 
 machine 'analytics' do
-  chef_config "use_policyfile true\nversioned_cookbooks true\npolicy_group 'reference'\npolicy_name 'analytics'"
+  recipe 'chef-reference::analytics'
   action :converge
   converge true
   files(

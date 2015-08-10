@@ -1,6 +1,6 @@
 #
 # Cookbook Name:: chef-reference
-# Recipe:: chef-server
+# Recipe:: server-setup
 #
 # Copyright 2015 Chef Software, Inc.
 #
@@ -16,6 +16,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+# We need these directories because we're going to render files in the other
+# recipes, e.g. `/etc/opscode-reporting/opscode-reporting-secrets.json` in
+# server-backend.
 directory '/etc/opscode' do
   mode 0755
   recursive true
