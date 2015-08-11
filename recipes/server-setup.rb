@@ -31,7 +31,3 @@ end
 directory '/etc/opscode-reporting' do
   recursive true
 end
-
-chef_ingredient 'chef-server' do
-  notifies :reconfigure, 'chef_ingredient[chef-server]'
-end

@@ -20,10 +20,31 @@ include_recipe 'chef-reference::server-setup'
 
 node.default['chef']['chef-server']['role'] = 'frontend'
 
+# TODO: remove after https://github.com/chef/chef-server/pull/465 is released
+# IPV6 hack - avoid having oc_id listen on ipv6 address by removing the entry
+# for localhost in /etc/hosts.
+delete_lines 'Remove IPV6 localhost' do
+  path '/etc/hosts'
+  pattern '^::1.*'
+end
+# End IPV6 hack
+
 # TODO: (jtimberman) chef_vault_item. We sort this so we don't
 # get regenerated content in the private-chef-secrets.json later.
 chef_secrets      = Hash[data_bag_item('secrets', "private-chef-secrets-#{node.chef_environment}")['data'].sort]
 reporting_secrets = Hash[data_bag_item('secrets', "opscode-reporting-secrets-#{node.chef_environment}")['data'].sort]
+
+file '/etc/opscode/private-chef-secrets.json' do
+  content JSON.pretty_generate(chef_secrets)
+  notifies :reconfigure, 'chef_ingredient[chef-server]'
+  sensitive true
+end
+
+file '/etc/opscode-reporting/opscode-reporting-secrets.json' do
+  content JSON.pretty_generate(reporting_secrets)
+  notifies :reconfigure, 'chef_ingredient[reporting]'
+  sensitive true
+end
 
 # It's easier to deal with a hash rather than a data bag item, since
 # we're not going to need any of the methods, we just need raw data.
@@ -48,32 +69,39 @@ chef_servers << {
   'role' => 'frontend'
 }
 
-node.default['chef']['chef-server'].merge!(chef_server_config)
+node.default['chef']['chef-server']['configuration'].merge!(chef_server_config)
 
-# TODO: remove after https://github.com/chef/chef-server/pull/465 is released
-# IPV6 hack - avoid having oc_id listen on ipv6 address by removing the entry
-# for localhost in /etc/hosts.
-delete_lines 'Remove IPV6 localhost' do
-  path '/etc/hosts'
-  pattern '^::1.*'
+chef_ingredient 'chef-server' do
+  action :install
+  config <<-CONFIG
+topology "#{chef_server_config['topology']}"
+api_fqdn "#{chef_server_config['api_fqdn']}"
+
+# Enable actions for Chef Analytics
+dark_launch['actions'] = true
+
+oc_id['applications'] = {
+  'analytics' => {
+    'redirect_uri' => 'https://#{chef_server_config['analytics_fqdn']}'
+  }
+}
+
+rabbitmq['vip'] = "#{node['ipaddress']}"
+rabbitmq['node_ip_address'] = '0.0.0.0'
+
+#{chef_servers.map do |server|
+    <<-SERVER_BLOCK
+server '#{server['fqdn']}',
+  :ipaddress => '#{server['ipaddress']}',
+  :role => '#{server['role']}'
+  #{':bootstrap => true' if server['bootstrap']}
+SERVER_BLOCK
+  end.join('\n\n')}
+CONFIG
 end
-# End IPV6 hack
 
-file '/etc/opscode/private-chef-secrets.json' do
-  content JSON.pretty_generate(chef_secrets)
-  notifies :reconfigure, 'chef_ingredient[chef-server]'
-  sensitive true
-end
-
-file '/etc/opscode-reporting/opscode-reporting-secrets.json' do
-  content JSON.pretty_generate(reporting_secrets)
-  notifies :reconfigure, 'chef_ingredient[reporting]'
-  sensitive true
-end
-
-template '/etc/opscode/chef-server.rb' do
-  source 'chef-server.rb.erb'
-  variables chef_server_config: node['chef']['chef-server'], chef_servers: chef_servers
+ingredient_config 'chef-server' do
+  action :render
   notifies :reconfigure, 'chef_ingredient[chef-server]'
 end
 

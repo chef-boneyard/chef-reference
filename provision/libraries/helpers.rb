@@ -31,5 +31,12 @@ module ChefHelpers
       h[ks] = h.delete k
       symbolize_keys_deep! h[ks] if h[ks].is_a? Hash
     end
+    h
+  end
+
+  def self.get_machine_options(node, machine_name)
+    global_options = node['chef']['provisioning']['machine_options'].to_hash
+    individual_options = node['chef']['provisioning']["#{machine_name}-options"].to_hash
+    symbolize_keys_deep! global_options.merge(individual_options)
   end
 end

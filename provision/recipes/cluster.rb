@@ -27,6 +27,7 @@ directory '/tmp/stash' do
 end
 
 machine 'server-backend' do
+  machine_options ChefHelpers.get_machine_options(node, 'server-backend')
   recipe 'chef-reference::server-backend'
   action :converge
   converge true
@@ -49,6 +50,7 @@ end
 end
 
 machine 'server-frontend' do
+  machine_options ChefHelpers.get_machine_options(node, 'server-frontend')
   recipe 'chef-reference::server-frontend'
   action :converge
   converge true
@@ -60,6 +62,7 @@ machine 'server-frontend' do
 end
 
 machine 'analytics' do
+  machine_options ChefHelpers.get_machine_options(node, 'analytics')
   recipe 'chef-reference::analytics'
   action :converge
   converge true
