@@ -1,12 +1,6 @@
 {
   "id": "topology",
   "topology": "tier",
-  "disabled_svcs": [],
-  "enabled_svcs": [],
-  "vips": [],
-  "dark_launch": {
-    "actions": true
-  },
   "api_fqdn": "chef.example.com",
   "analytics_fqdn": "analytics.example.com",
   "notification_email": "ops@example.com"

@@ -7,8 +7,8 @@ AllCops:
     - Guardfile
     - Policyfile.rb
   Exclude:
-    - vendor/**
-    - chef-zero-local/**
+    - vendor/**/*
+    - chef-zero-local/**/*
 
 AlignParameters:
   Enabled: false

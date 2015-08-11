@@ -33,4 +33,3 @@ provisioner_machine_opts = node['chef']['provisioning']['machine_options'].to_ha
 ChefHelpers.symbolize_keys_deep!(provisioner_machine_opts)
 
 with_driver(node['chef']['provisioning']['driver']['with-parameter'])
-with_machine_options(provisioner_machine_opts)

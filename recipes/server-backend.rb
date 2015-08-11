@@ -27,25 +27,6 @@ node.default['chef']['chef-server']['bootstrap']['enable'] = true
 chef_secrets      = Hash[data_bag_item('secrets', "private-chef-secrets-#{node.chef_environment}")['data'].sort]
 reporting_secrets = Hash[data_bag_item('secrets', "opscode-reporting-secrets-#{node.chef_environment}")['data'].sort]
 
-# It's easier to deal with a hash rather than a data bag item, since
-# we're not going to need any of the methods, we just need raw data.
-chef_server_config = data_bag_item('chef_server', 'topology').to_hash
-chef_server_config.delete('id')
-
-chef_servers = [
-  {
-    'fqdn' => node['fqdn'],
-    'ipaddress' => node['ipaddress'],
-    'bootstrap' => true,
-    'role' => 'backend'
-  }
-]
-
-chef_server_config['vips'] = { 'rabbitmq' => node['ipaddress'] }
-chef_server_config['rabbitmq'] = { 'node_ip_address' => '0.0.0.0' }
-
-node.default['chef']['chef-server'].merge!(chef_server_config)
-
 file '/etc/opscode/private-chef-secrets.json' do
   content JSON.pretty_generate(chef_secrets)
   notifies :reconfigure, 'chef_ingredient[chef-server]'
@@ -58,9 +39,37 @@ file '/etc/opscode-reporting/opscode-reporting-secrets.json' do
   sensitive true
 end
 
-template '/etc/opscode/chef-server.rb' do
-  source 'chef-server.rb.erb'
-  variables chef_server_config: node['chef']['chef-server'], chef_servers: chef_servers
+# It's easier to deal with a hash rather than a data bag item, since
+# we're not going to need any of the methods, we just need raw data.
+chef_server_config = data_bag_item('chef_server', 'topology').to_hash
+chef_server_config.delete('id')
+
+node.default['chef']['chef-server']['configuration'].merge!(chef_server_config)
+
+chef_ingredient 'chef-server' do
+  action :install
+  config <<-CONFIG
+topology "#{chef_server_config['topology']}"
+api_fqdn "#{chef_server_config['api_fqdn']}"
+
+# Enable actions for Chef Analytics
+dark_launch['actions'] = true
+
+rabbitmq['vip'] = "#{node['ipaddress']}"
+rabbitmq['node_ip_address'] = '0.0.0.0'
+
+server '#{node['fqdn']}',
+  :ipaddress => '#{node['ipaddress']}',
+  :bootstrap => true,
+  :role => 'backend'
+
+backend_vip '#{node['fqdn']}',
+  :ipaddress => '#{node['ipaddress']}'
+CONFIG
+end
+
+ingredient_config 'chef-server' do
+  action :render
   notifies :reconfigure, 'chef_ingredient[chef-server]'
   notifies :restart, 'omnibus_service[chef-server/rabbitmq]'
 end

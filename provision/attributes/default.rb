@@ -22,7 +22,7 @@ default['chef']['provisioning'].tap do |provisioning|
   # and repetition makes us sad pandas.
   provisioning['key-name'] = 'chef-reference-arch'
 
-  # We default to the aws driver, but by overriding this attribute
+  # we default to the aws driver, but by overriding this attribute
   # elsewhere (like a role, or a wrapper cookbook), other drivers should
   # be usable.
   provisioning['driver'] = {
@@ -47,4 +47,16 @@ default['chef']['provisioning'].tap do |provisioning|
       'instance_type' => 'm3.medium'
     }
   }
+
+  # these can configure per machine options to be used during provisioning.
+  # default is an empty hash. You can override this with your Policyfile
+  # or wrapper cookbook. e.g.:
+  # node.default['chef']['provisioning']['server-backend-options'] = {
+  #   'bootstrap_options' => {
+  #     'instance_type' => 'c3.xl'
+  #   }
+  # }
+  ['server-backend', 'server-frontend', 'analytics'].each do |machine|
+    provisioning["#{machine}-options"] = {}
+  end
 end
