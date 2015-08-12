@@ -16,6 +16,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+
 include_recipe 'chef-reference::server-setup'
 
 node.default['chef']['chef-server']['role'] = 'frontend'
@@ -90,13 +91,21 @@ rabbitmq['vip'] = "#{node['ipaddress']}"
 rabbitmq['node_ip_address'] = '0.0.0.0'
 
 #{chef_servers.map do |server|
-    <<-SERVER_BLOCK
+    config = <<-SERVER_BLOCK
 server '#{server['fqdn']}',
   :ipaddress => '#{server['ipaddress']}',
+  #{':bootstrap => true,' if server['bootstrap']}
   :role => '#{server['role']}'
-  #{':bootstrap => true' if server['bootstrap']}
 SERVER_BLOCK
-  end.join('\n\n')}
+  if server['role'] == 'backend'
+    config += <<-VIP_BLOCK
+backend_vip '#{server['fqdn']}',
+  :ipaddress => '#{server['ipaddress']}'
+VIP_BLOCK
+  end
+
+  config
+end.join("\n\n")}
 CONFIG
 end
 

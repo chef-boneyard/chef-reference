@@ -39,4 +39,35 @@ module ChefHelpers
     individual_options = node['chef']['provisioning']["#{machine_name}-options"].to_hash
     symbolize_keys_deep! global_options.merge(individual_options)
   end
+
+  def self.server_supports_policies?
+    require 'chef/server_api'
+    api = Chef::ServerAPI.new
+    begin
+      api.get('/policies')
+      true
+    rescue Net::HTTPServerException
+      false
+    end
+  end
+
+  def self.use_policyfiles(role)
+    # TODO: support policy_group setting in some way. optimally from
+    # the context (and pass that in from the recipe)
+    if server_supports_policies?
+      chef_config = <<-CONF.gsub(/^\s+/, '')
+        use_policyfile true
+        policy_document_native_api true
+        policy_group "reference"
+        policy_name "#{role}"
+      CONF
+    else
+      chef_config = <<-CONF.gsub(/^\s+/, '')
+        use_policyfile true
+        policy_document_native_api false
+        deployment_group "#{role}-reference"
+      CONF
+    end
+    chef_config
+  end
 end
