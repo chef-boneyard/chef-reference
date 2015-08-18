@@ -19,7 +19,14 @@
 # TODO: (jtimberman) Maybe we'll use a data bag to store these?
 # Maybe we don't need this attribute at all? Or change to 'analytics' and 'frontend' or something.
 node.default['chef']['chef-server']['role'] = 'analytics'
-analytics_fqdn = data_bag_item('chef_server', 'topology')['analytics_fqdn'] || node['ec2']['public_hostname']
+topology = data_bag_item('chef_server', 'topology')
+analytics_fqdn = topology['analytics_fqdn'] || node['ec2']['public_hostname']
+
+frontend_ip = search(
+  'node',
+  'chef_chef-server_role:frontend',
+  filter_result: { 'ipaddress' => ['ipaddress'] }
+).first['ipaddress']
 
 # We define these here instead of including the default recipe because
 # analytics doesn't actually need chef-server-core.
@@ -39,4 +46,12 @@ end
 
 chef_ingredient 'analytics' do
   notifies :reconfigure, 'chef_ingredient[analytics]'
+end
+
+# The analytics system needs to know the IP of the `api_fqdn`
+# TODO: (jtimberman) Defer this to the end user to set up their own
+# DNS entries
+append_if_no_line 'resolve-frontend' do
+  path '/etc/hosts'
+  line "#{frontend_ip} #{topology['api_fqdn']}"
 end

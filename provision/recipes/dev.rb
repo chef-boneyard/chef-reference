@@ -1,5 +1,10 @@
+context = ChefDK::ProvisioningData.context
+
 node.default['chef']['provisioning'].tap do |provisioning|
   provisioning['key-name'] = 'vagrant'
+  provisioning['machine_options'] = {
+    'vagrant_provider' => context.opts.vagrant ? context.opts.vagrant : 'virtualbox'
+  }
 
   provisioning['driver'] = {
     'gems' => [

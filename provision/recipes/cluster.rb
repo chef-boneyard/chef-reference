@@ -28,7 +28,7 @@ end
 
 machine 'server-backend' do
   machine_options ChefHelpers.get_machine_options(node, 'server-backend')
-  recipe 'chef-reference::server-backend'
+  chef_config ChefHelpers.use_policyfiles('server-backend')
   action :converge
   converge true
 end
@@ -51,7 +51,7 @@ end
 
 machine 'server-frontend' do
   machine_options ChefHelpers.get_machine_options(node, 'server-frontend')
-  recipe 'chef-reference::server-frontend'
+  chef_config ChefHelpers.use_policyfiles('server-frontend')
   action :converge
   converge true
   files(
@@ -63,7 +63,7 @@ end
 
 machine 'analytics' do
   machine_options ChefHelpers.get_machine_options(node, 'analytics')
-  recipe 'chef-reference::analytics'
+  chef_config ChefHelpers.use_policyfiles('analytics')
   action :converge
   converge true
   files(
