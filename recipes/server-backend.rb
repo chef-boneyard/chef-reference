@@ -44,6 +44,9 @@ end
 chef_server_config = data_bag_item('chef_server', 'topology').to_hash
 chef_server_config.delete('id')
 
+chef_server_config['vips'] = { 'rabbitmq' => node['ipaddress'] }
+chef_server_config['rabbitmq'] = { 'node_ip_address' => '0.0.0.0' }
+
 node.default['chef']['chef-server']['configuration'].merge!(chef_server_config)
 
 chef_ingredient 'chef-server' do
@@ -55,7 +58,13 @@ api_fqdn "#{chef_server_config['api_fqdn']}"
 # Enable actions for Chef Analytics
 dark_launch['actions'] = true
 
-rabbitmq['vip'] = "#{node['ipaddress']}"
+oc_id['applications'] = {
+  'analytics' => {
+    'redirect_uri' => 'https://#{chef_server_config['analytics_fqdn']}'
+  }
+}
+
+rabbitmq['vip'] = '#{node['ipaddress']}'
 rabbitmq['node_ip_address'] = '0.0.0.0'
 
 server '#{node['fqdn']}',

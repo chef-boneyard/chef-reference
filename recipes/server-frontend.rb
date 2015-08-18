@@ -59,7 +59,8 @@ chef_servers = search( # ~FC003
     'fqdn' => ['fqdn'],
     'ipaddress' => ['ipaddress'],
     'bootstrap' => ['chef', 'chef-server', 'bootstrap', 'enable'],
-    'role' => ['chef', 'chef-server', 'role']
+    'role' => ['chef', 'chef-server', 'role'],
+    'rabbitmq_node_ip' => ['chef', 'chef-server', 'configuration', 'vips', 'rabbitmq']
   }
 )
 
@@ -87,11 +88,10 @@ oc_id['applications'] = {
   }
 }
 
-rabbitmq['vip'] = "#{node['ipaddress']}"
-rabbitmq['node_ip_address'] = '0.0.0.0'
-
 #{chef_servers.map do |server|
-    config = <<-SERVER_BLOCK
+  config = "# server block for #{server['fqdn']}\n"
+  config += "rabbitmq['vip'] = '#{server['rabbitmq_node_ip']}'\n\n"  if server['role'] == 'backend'
+  config += <<-SERVER_BLOCK
 server '#{server['fqdn']}',
   :ipaddress => '#{server['ipaddress']}',
   #{':bootstrap => true,' if server['bootstrap']}

@@ -27,7 +27,7 @@ directory '/tmp/stash' do
 end
 
 machine 'server-backend' do
-  machine_options  ChefHelpers.get_machine_options(node, 'server-backend')
+  machine_options ChefHelpers.get_machine_options(node, 'server-backend')
   chef_config ChefHelpers.use_policyfiles('server-backend')
   action :converge
   converge true
