@@ -51,26 +51,6 @@ end
 # we're not going to need any of the methods, we just need raw data.
 chef_server_config = data_bag_item('chef_server', 'topology').to_hash
 chef_server_config.delete('id')
-
-chef_servers = search( # ~FC003
-  'node',
-  'chef_chef-server_role:backend',
-  filter_result: {
-    'fqdn' => ['fqdn'],
-    'ipaddress' => ['ipaddress'],
-    'bootstrap' => ['chef', 'chef-server', 'bootstrap', 'enable'],
-    'role' => ['chef', 'chef-server', 'role'],
-    'rabbitmq_node_ip' => ['chef', 'chef-server', 'configuration', 'vips', 'rabbitmq']
-  }
-)
-
-chef_servers << {
-  'fqdn' => node['fqdn'],
-  'ipaddress' => node['ipaddress'],
-  'bootstrap' => false,
-  'role' => 'frontend'
-}
-
 node.default['chef']['chef-server']['configuration'].merge!(chef_server_config)
 
 chef_ingredient 'chef-server' do
@@ -88,24 +68,7 @@ oc_id['applications'] = {
   }
 }
 
-#{chef_servers.map do |server|
-  config = "# server block for #{server['fqdn']}\n"
-  config += "rabbitmq['vip'] = '#{server['rabbitmq_node_ip']}'\n\n"  if server['role'] == 'backend'
-  config += <<-SERVER_BLOCK
-server '#{server['fqdn']}',
-  :ipaddress => '#{server['ipaddress']}',
-  #{':bootstrap => true,' if server['bootstrap']}
-  :role => '#{server['role']}'
-SERVER_BLOCK
-  if server['role'] == 'backend'
-    config += <<-VIP_BLOCK
-backend_vip '#{server['fqdn']}',
-  :ipaddress => '#{server['ipaddress']}'
-VIP_BLOCK
-  end
-
-  config
-end.join("\n\n")}
+#{ChefHelpers.render_server_config_blocks(node)}
 CONFIG
 end
 

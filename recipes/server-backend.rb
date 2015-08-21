@@ -61,16 +61,7 @@ oc_id['applications'] = {
   }
 }
 
-rabbitmq['vip'] = '#{node['ipaddress']}'
-rabbitmq['node_ip_address'] = '0.0.0.0'
-
-server '#{node['fqdn']}',
-  :ipaddress => '#{node['ipaddress']}',
-  :bootstrap => true,
-  :role => 'backend'
-
-backend_vip '#{node['fqdn']}',
-  :ipaddress => '#{node['ipaddress']}'
+#{ChefHelpers.render_server_config_blocks(node)}
 CONFIG
 end
 

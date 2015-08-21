@@ -10,6 +10,9 @@ These are required for all members of the Chef Server cluster.
 {
   "id": "private-chef-secrets-_default",
   "data": {
+    "redis_lb": {
+      "password": "65287652102ad7dbf4de207eab2c58de51cf7c8917778c37b106d919459765a94a8d56010545ad2d58f2a9fc3dfb2c44d568"
+    },
     "rabbitmq": {
       "password": "a64d329c102ad7dbf4de207eab2c58de51cf7c8917778c37b106d919459765a94a8d56010545ad2d58f2a9fc3dfb2c44d568",
       "jobs_password": "b43cad09164c48611c1a4986167310cf1b6110d9be83cce790182c9df30d7da30aeacccadc6b0f042ac060d6077480e3e29f",

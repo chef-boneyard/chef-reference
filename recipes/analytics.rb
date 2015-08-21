@@ -16,6 +16,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+
 # TODO: (jtimberman) Maybe we'll use a data bag to store these?
 # Maybe we don't need this attribute at all? Or change to 'analytics' and 'frontend' or something.
 node.default['chef']['chef-server']['role'] = 'analytics'
