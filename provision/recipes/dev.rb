@@ -19,22 +19,22 @@ node.default['chef']['provisioning'].tap do |provisioning|
   provisioning['server-backend-options'] = {
     vagrant_config: <<-VC
       config.vm.box = "opscode-centos-7.1"
+      config.vm.network "private_network", ip: "192.168.80.80"
     VC
-#      config.vm.network "private_network", ip: "192.168.80.80"
   }
 
   provisioning['server-frontend-options'] = {
     vagrant_config: <<-VC
       config.vm.box = "opscode-centos-7.1"
+      config.vm.network "private_network", ip: "192.168.80.81"
     VC
- #     config.vm.network "private_network", ip: "192.168.80.81"
   }
 
   provisioning['analytics-options'] = {
     vagrant_config: <<-VC
       config.vm.box = "opscode-centos-7.1"
+      config.vm.network "private_network", ip: "192.168.80.82"
     VC
-  #    config.vm.network "private_network", ip: "192.168.80.82"
   }
 end
 

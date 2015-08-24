@@ -32,8 +32,8 @@ machine_batch do
   action :converge
   machine 'server-backend' do
     machine_options ChefHelpers.get_machine_options(node, 'server-backend')
-    attribute %w[chef chef-server role], 'backend'
-    attribute %w[chef chef-server bootstrap enable], true
+    attribute %w(chef chef-server role), 'backend'
+    attribute %w(chef chef-server bootstrap enable), true
     run_list []
   end
 
