@@ -26,8 +26,29 @@ directory '/tmp/stash' do
   recursive true
 end
 
+machine_batch do
+  # need action ready because the default is converge, and the
+  # machines are really ready, too.
+  action :converge
+  machine 'server-backend' do
+    machine_options ChefHelpers.get_machine_options(node, 'server-backend')
+    attribute %w[chef chef-server role], 'backend'
+    attribute %w[chef chef-server bootstrap enable], true
+    run_list []
+  end
+
+  machine 'server-frontend' do
+    machine_options ChefHelpers.get_machine_options(node, 'server-frontend')
+    run_list []
+  end
+
+  machine 'analytics' do
+    machine_options ChefHelpers.get_machine_options(node, 'analytics')
+    run_list []
+  end
+end
+
 machine 'server-backend' do
-  machine_options ChefHelpers.get_machine_options(node, 'server-backend')
   chef_config ChefHelpers.use_policyfiles('server-backend')
   action :converge
   converge true
@@ -50,7 +71,6 @@ end
 end
 
 machine 'server-frontend' do
-  machine_options ChefHelpers.get_machine_options(node, 'server-frontend')
   chef_config ChefHelpers.use_policyfiles('server-frontend')
   action :converge
   converge true
@@ -62,7 +82,6 @@ machine 'server-frontend' do
 end
 
 machine 'analytics' do
-  machine_options ChefHelpers.get_machine_options(node, 'analytics')
   chef_config ChefHelpers.use_policyfiles('analytics')
   action :converge
   converge true

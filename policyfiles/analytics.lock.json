@@ -1,24 +1,24 @@
 {
-  "revision_id": "ccc351374970567e2d88e0b24768f316785b64e60857fe684ca9461b320bdd5a",
+  "revision_id": "66eae1cc25deab5252e9d237631fca825c4e66e41a6c9ae17e98752026f9253e",
   "name": "analytics",
   "run_list": [
     "recipe[chef-reference::analytics]"
   ],
   "cookbook_locks": {
     "chef-reference": {
-      "version": "0.1.4",
-      "identifier": "b32411e21b662042d60826fabfe87ade36a09685",
-      "dotted_decimal_identifier": "50423680057697824.18812678964953064.135094817822341",
+      "version": "0.1.5",
+      "identifier": "313af958de923dec299fb07efc432d051b6cf391",
+      "dotted_decimal_identifier": "13857116471071293.66473860341365827.49499958211473",
       "source": "..",
       "cache_key": null,
       "scm_info": {
         "scm": "git",
         "remote": null,
-        "revision": "f8b69c66b5a3ddb15a79f7d20f1ec7a9d51402a1",
+        "revision": "e84f56ae838cd2205f27e658b8074bc893d8feff",
         "working_tree_clean": false,
         "published": true,
         "synchronized_remote_branches": [
-          "delivery/_for/master/use-policyfile"
+          "delivery/master"
         ]
       },
       "source_options": {
@@ -81,14 +81,14 @@
       }
     },
     "apt": {
-      "version": "2.8.0",
-      "identifier": "1df75409dfb5395f778a13b462a3869fc4246544",
-      "dotted_decimal_identifier": "8434714639578425.26871557707293347.148020748641604",
-      "cache_key": "apt-2.8.0-supermarket.chef.io",
-      "origin": "https://supermarket.chef.io:443/api/v1/cookbooks/apt/versions/2.8.0/download",
+      "version": "2.8.2",
+      "identifier": "690d3e14901823c3b6cd2f1a6b3758159dd7a20a",
+      "dotted_decimal_identifier": "29569432838740003.55088612833389367.96849865712138",
+      "cache_key": "apt-2.8.2-supermarket.chef.io",
+      "origin": "https://supermarket.chef.io:443/api/v1/cookbooks/apt/versions/2.8.2/download",
       "source_options": {
-        "artifactserver": "https://supermarket.chef.io:443/api/v1/cookbooks/apt/versions/2.8.0/download",
-        "version": "2.8.0"
+        "artifactserver": "https://supermarket.chef.io:443/api/v1/cookbooks/apt/versions/2.8.2/download",
+        "version": "2.8.2"
       }
     }
   },
@@ -126,11 +126,11 @@
       ],
       [
         "apt",
-        "= 2.8.0"
+        "= 2.8.2"
       ]
     ],
     "dependencies": {
-      "chef-reference (0.1.4)": [
+      "chef-reference (0.1.5)": [
         [
           "chef-ingredient",
           ">= 0.0.0"
@@ -168,7 +168,7 @@
       "yum (3.6.3)": [
 
       ],
-      "apt (2.8.0)": [
+      "apt (2.8.2)": [
 
       ]
     }
