@@ -1,5 +1,5 @@
 #
-# Cookbook Name:: chef-reference
+# Cookbook Name:: provision
 # Libraries:: helpers
 #
 # Copyright (C) 2015, Chef Software, Inc.
