@@ -17,7 +17,7 @@
 # limitations under the License.
 #
 
-module ChefHelpers
+module ChefReferenceHelpers
   def self.render_server_config_blocks(node)
     # Find all the backend servers
     s = Chef::Search::Query.new
@@ -27,7 +27,6 @@ module ChefHelpers
                           'fqdn' => ['fqdn'],
                           'ipaddress' => ['ipaddress'],
                           'bootstrap' => ['chef', 'chef-server', 'bootstrap', 'enable'],
-                          'role' => ['chef', 'chef-server', 'role'],
                           'rabbitmq_node_ip' => ['chef', 'chef-server', 'configuration', 'vips', 'rabbitmq']
                         })
     # Chef::Search::Query.search returns the answer in the following format
@@ -42,7 +41,7 @@ module ChefHelpers
       config.puts ''
       config.puts "server '#{backend['fqdn']}',"
       config.puts "  :ipaddress => '#{backend['ipaddress']}',"
-      config.puts '  :bootstrap => true,'
+      config.puts '  :bootstrap => true,' if backend['bootstrap']
       config.puts '  :role      => \'backend\''
       config.puts ''
     end

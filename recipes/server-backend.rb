@@ -61,7 +61,7 @@ oc_id['applications'] = {
   }
 }
 
-#{ChefHelpers.render_server_config_blocks(node)}
+#{ChefReferenceHelpers.render_server_config_blocks(node)}
 CONFIG
 end
 
