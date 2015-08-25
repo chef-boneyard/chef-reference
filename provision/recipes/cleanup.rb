@@ -19,9 +19,10 @@
 
 include_recipe 'provision::_setup'
 
-%w(analytics server-frontend server-backend).each do |m|
-  machine m do
-    action :destroy
+machine_batch do
+  action :destroy
+  %w(analytics server-frontend server-backendb).each do |m|
+    machine m
   end
 end
 

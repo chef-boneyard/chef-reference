@@ -22,7 +22,7 @@ node.default['chef']['chef-server']['role'] = 'analytics'
 topology = data_bag_item('chef_server', 'topology')
 analytics_fqdn = topology['analytics_fqdn'] || node['ec2']['public_hostname']
 
-frontend_ip = search(
+frontend_ip = search( # ~FC003
   'node',
   'chef_chef-server_role:frontend',
   filter_result: { 'ipaddress' => ['ipaddress'] }

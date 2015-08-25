@@ -45,9 +45,9 @@ module ChefHelpers
     api = Chef::ServerAPI.new
     begin
       api.get('/policies')
-      true
+      return true
     rescue Net::HTTPServerException => e
-      false if e.response.code.to_i == 404
+      return false if e.response.code.to_i == 404
       raise "Did not expect #{e.response.code} for GET /policies\nException: #{e.inspect}"
     end
   end
