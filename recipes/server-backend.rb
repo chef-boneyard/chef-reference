@@ -58,6 +58,9 @@ dark_launch['actions'] = true
 oc_id['applications'] = {
   'analytics' => {
     'redirect_uri' => 'https://#{chef_server_config['analytics_fqdn']}'
+  },
+  'supermarket' => {
+    'redirect_uri' => 'https://#{chef_server_config['supermarket_fqdn']}/auth/chef_oauth2/callback'
   }
 }
 
@@ -86,6 +89,16 @@ file '/etc/opscode-analytics/actions-source.json' do
 end
 
 file '/etc/opscode-analytics/webui_priv.pem' do
+  mode 00644
+  subscribes :create, 'chef_ingredient[chef-server]', :immediately
+end
+
+directory '/etc/opscode/oc-id-applications' do
+  mode 00755
+  subscribes :create, 'chef_ingredient[chef-server]', :immediately
+end
+
+file '/etc/opscode/oc-id-applications/supermarket.json' do
   mode 00644
   subscribes :create, 'chef_ingredient[chef-server]', :immediately
 end

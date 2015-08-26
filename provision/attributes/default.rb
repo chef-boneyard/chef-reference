@@ -56,7 +56,7 @@ default['chef']['provisioning'].tap do |provisioning|
   #     'instance_type' => 'c3.xl'
   #   }
   # }
-  ['server-backend', 'server-frontend', 'analytics'].each do |machine|
+  ['server-backend', 'server-frontend', 'analytics', 'supermarket'].each do |machine|
     provisioning["#{machine}-options"] = {}
   end
 end

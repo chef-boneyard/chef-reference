@@ -3,5 +3,6 @@
   "topology": "tier",
   "api_fqdn": "chef.example.com",
   "analytics_fqdn": "analytics.example.com",
+  "supermarket_fqdn": "supermarket.example.com",
   "notification_email": "ops@example.com"
 }

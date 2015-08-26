@@ -39,11 +39,19 @@ machine_batch do
 
   machine 'server-frontend' do
     machine_options ChefHelpers.get_machine_options(node, 'server-frontend')
+    attribute %w(chef chef-server role), 'frontend'
     run_list []
   end
 
   machine 'analytics' do
     machine_options ChefHelpers.get_machine_options(node, 'analytics')
+    attribute %w(chef chef-server role), 'analytics'
+    run_list []
+  end
+
+  machine 'supermarket' do
+    machine_options ChefHelpers.get_machine_options(node, 'supermarket')
+    attribute %w(chef chef-server role), 'supermarket'
     run_list []
   end
 end
@@ -62,9 +70,9 @@ end
   end
 end
 
-%w(pivotal.pem webui_pub.pem).each do |opscode_file|
+%w(pivotal.pem webui_pub.pem oc-id-applications/supermarket.json).each do |opscode_file|
   machine_file "/etc/opscode/#{opscode_file}" do
-    local_path "/tmp/stash/#{opscode_file}"
+    local_path "/tmp/stash/#{opscode_file.gsub(%r{/}, '-')}"
     machine 'server-backend'
     action :download
   end
@@ -88,5 +96,14 @@ machine 'analytics' do
   files(
     '/etc/opscode-analytics/actions-source.json' => '/tmp/stash/actions-source.json',
     '/etc/opscode-analytics/webui_priv.pem' => '/tmp/stash/webui_priv.pem'
+  )
+end
+
+machine 'supermarket' do
+  chef_config ChefHelpers.use_policyfiles('supermarket')
+  action :converge
+  converge true
+  files(
+    '/etc/supermarket/oc-id-applications-supermarket.json' => '/tmp/stash/oc-id-applications-supermarket.json'
   )
 end

@@ -1,24 +1,24 @@
 {
-  "revision_id": "62a3d5bc9a10c219ac8d7143508de5a7d01a072ecf9c64c20b00e08f89270844",
+  "revision_id": "7041583b4be652daa8aea4af30ffd6076e6a60cf98da5f45dd268da6936c819f",
   "name": "server-frontend",
   "run_list": [
     "recipe[chef-reference::server-frontend]"
   ],
   "cookbook_locks": {
     "chef-reference": {
-      "version": "0.1.5",
-      "identifier": "72311225a7d463f06a30d54bdbdd631e2fe21e85",
-      "dotted_decimal_identifier": "32142101355943011.67670752380050397.108981303516805",
+      "version": "0.1.7",
+      "identifier": "3571d8df9276b05c74931e6236a69d3c5c2fd69e",
+      "dotted_decimal_identifier": "15043350043457200.26023873076147878.172882570237598",
       "source": "..",
       "cache_key": null,
       "scm_info": {
         "scm": "git",
         "remote": null,
-        "revision": "bb437ea6fa570b871854c47a69e208879eb08d36",
+        "revision": "672c4a7029030b4c14dd2a47f8853c17d11d7285",
         "working_tree_clean": false,
         "published": true,
         "synchronized_remote_branches": [
-          "delivery/_for/master/batch-machine-creation"
+          "delivery/master"
         ]
       },
       "source_options": {
@@ -130,7 +130,7 @@
       ]
     ],
     "dependencies": {
-      "chef-reference (0.1.5)": [
+      "chef-reference (0.1.7)": [
         [
           "chef-ingredient",
           ">= 0.0.0"
