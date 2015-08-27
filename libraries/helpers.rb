@@ -18,21 +18,29 @@
 #
 
 module ChefReferenceHelpers
-  def self.render_server_config_blocks(node)
-    # Find all the backend servers
+  def self.find_machine_ip(role = 'frontend')
     s = Chef::Search::Query.new
-    backends = s.search(:node,
-                        'chef_chef-server_role:backend',
-                        filter_result: {
-                          'fqdn' => ['fqdn'],
-                          'ipaddress' => ['ipaddress'],
-                          'bootstrap' => ['chef', 'chef-server', 'bootstrap', 'enable'],
-                          'rabbitmq_node_ip' => ['chef', 'chef-server', 'configuration', 'vips', 'rabbitmq']
-                        })
+    results = s.search(
+      :node,
+      "chef_chef-server_role:#{role}",
+      filter_result: {
+        'fqdn' => ['fqdn'],
+        'ipaddress' => ['ipaddress'],
+        'role' => ['chef', 'chef-server', 'role'],
+        'bootstrap' => ['chef', 'chef-server', 'bootstrap', 'enable'],
+        'rabbitmq_node_ip' => ['chef', 'chef-server', 'configuration', 'vips', 'rabbitmq']
+      }
+    )
     # Chef::Search::Query.search returns the answer in the following format
     # [ [ { ... }, { ... }, ... ], starting_index, total_found]
-    # so data will be in the first element of the backends array
-    backends = backends.first
+    # so data will be in the first element of the results array
+    results.first
+  end
+
+  def self.render_server_config_blocks(node)
+    # Find all the backend servers
+    backends = find_machine_ip('backend')
+    backends = backends
 
     # Write server blocks for all the backend servers
     config = StringIO.new

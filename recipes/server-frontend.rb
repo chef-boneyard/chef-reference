@@ -53,6 +53,8 @@ chef_server_config = data_bag_item('chef_server', 'topology').to_hash
 chef_server_config.delete('id')
 node.default['chef']['chef-server']['configuration'].merge!(chef_server_config)
 
+supermarket_ip = ChefReferenceHelpers.find_machine_ip('supermarket')
+
 chef_ingredient 'chef-server' do
   action :install
   config <<-CONFIG
@@ -65,6 +67,9 @@ dark_launch['actions'] = true
 oc_id['applications'] = {
   'analytics' => {
     'redirect_uri' => 'https://#{chef_server_config['analytics_fqdn']}'
+  },
+  'supermarket' => {
+    'redirect_uri' => 'https://#{chef_server_config['supermarket_fqdn']}/auth/chef_oauth2/callback'
   }
 }
 
@@ -83,4 +88,11 @@ end
 
 chef_ingredient 'reporting' do
   notifies :reconfigure, 'chef_ingredient[reporting]'
+end
+
+# TODO: (jtimberman) Defer this to the end user to set up their own
+# DNS entries
+append_if_no_line 'resolve-supermarket' do
+  line "#{supermarket_ip.first['ipaddress']} #{chef_server_config['supermarket_fqdn']}"
+  path '/etc/hosts'
 end

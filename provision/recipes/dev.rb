@@ -49,6 +49,18 @@ node.default['chef']['provisioning'].tap do |provisioning|
       config.vm.network "private_network", ip: "192.168.80.82"
     VC
   }
+
+  provisioning['supermarket-options'] = {
+    vagrant_config: <<-VC
+      config.vm.provider "vmware_fusion" do |v|
+        v.vmx["memsize"] = "1024"
+        v.vmx["numvcpus"] = "2"
+      end
+
+      config.vm.box = "opscode-centos-7.1"
+      config.vm.network "private_network", ip: "192.168.80.83"
+    VC
+  }
 end
 
 include_recipe 'provision::cluster'

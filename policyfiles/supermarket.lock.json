@@ -1,8 +1,8 @@
 {
-  "revision_id": "5a0fc88698ec23e21157b718704757c3fd481b9b9ec3b37f7545e396ce48031a",
-  "name": "server-backend",
+  "revision_id": "9dce4e48d85d6d796fbfcf11e2d1bc99c26624b8016e9e74fec7ad7cbc9cd3fe",
+  "name": "supermarket",
   "run_list": [
-    "recipe[chef-reference::server-backend]"
+    "recipe[chef-reference::supermarket]"
   ],
   "cookbook_locks": {
     "chef-reference": {

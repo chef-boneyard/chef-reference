@@ -23,11 +23,7 @@ node.default['chef']['chef-server']['role'] = 'analytics'
 topology = data_bag_item('chef_server', 'topology')
 analytics_fqdn = topology['analytics_fqdn'] || node['ec2']['public_hostname']
 
-frontend_ip = search( # ~FC003
-  'node',
-  'chef_chef-server_role:frontend',
-  filter_result: { 'ipaddress' => ['ipaddress'] }
-).first['ipaddress']
+frontend_ip = ChefReferenceHelpers.find_machine_ip
 
 # We define these here instead of including the default recipe because
 # analytics doesn't actually need chef-server-core.
@@ -53,6 +49,6 @@ end
 # TODO: (jtimberman) Defer this to the end user to set up their own
 # DNS entries
 append_if_no_line 'resolve-frontend' do
+  line "#{frontend_ip.first['ipaddress']} #{topology['api_fqdn']}"
   path '/etc/hosts'
-  line "#{frontend_ip} #{topology['api_fqdn']}"
 end

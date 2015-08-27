@@ -1,14 +1,14 @@
 desc 'Make everything happen'
-task default: %i(server-backend server-frontend analytics) do
+task default: %i(server-backend server-frontend analytics supermarket) do
   sh('chef provision --no-policy --recipe cluster')
 end
 
 desc 'Provision development cluster'
-task dev: %i(server-backend server-frontend analytics) do
+task dev: %i(server-backend server-frontend analytics supermarket) do
   sh('chef provision --no-policy --recipe dev')
 end
 
-%w(server-backend server-frontend analytics).each do |role|
+%w(server-backend server-frontend analytics supermarket).each do |role|
   desc "Update policy for #{role}"
   task role.to_sym do
     sh("chef install policyfiles/#{role}.rb") unless File.exist?("policyfiles/#{role}.lock.json")
@@ -18,7 +18,7 @@ end
 end
 
 desc 'Update all the policies'
-task update: %i(server-backend server-frontend analytics)
+task update: %i(server-backend server-frontend analytics supermarket)
 
 desc 'Cleanup'
 task :cleanup do
