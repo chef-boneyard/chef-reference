@@ -19,7 +19,6 @@
 node.default['chef']['chef-server']['role'] = 'supermarket'
 topology = data_bag_item('chef_server', 'topology')
 oc_id_data = Chef::JSONCompat.from_json(open('/etc/supermarket/oc-id-applications-supermarket.json').read)
-frontend_ip = ChefReferenceHelpers.find_machine_ip
 
 directory '/etc/supermarket' do
   recursive true
@@ -44,14 +43,4 @@ ingredient_config 'supermarket' do
   notifies :reconfigure, 'chef_ingredient[supermarket]'
 end
 
-# TODO: (jtimberman) Defer this to the end user to set up their own
-# DNS entries
-append_if_no_line 'resolve-supermarket' do
-  line "#{node['ipaddress']} #{topology['supermarket_fqdn']}"
-  path '/etc/hosts'
-end
-
-append_if_no_line 'resolve-frontend' do
-  line "#{frontend_ip.first['ipaddress']} #{topology['api_fqdn']}"
-  path '/etc/hosts'
-end
+include_recipe 'chef-reference::_hostsfile'
