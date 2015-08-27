@@ -3,7 +3,7 @@ maintainer 'Chef Software, Inc.'
 maintainer_email 'eng-services@chef.io'
 license 'apache2'
 description 'Reference architecture cookbook for Chef products'
-version '0.1.7'
+version '0.1.8'
 
 depends 'chef-ingredient'
 

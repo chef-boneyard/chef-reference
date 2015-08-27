@@ -35,13 +35,13 @@ directory '/etc/opscode-analytics' do
   recursive true
 end
 
-# TODO: (jtimberman) ingredient_config, son, and probably after chef_ingredient?
-file '/etc/opscode-analytics/opscode-analytics.rb' do
-  content "topology 'standalone'\nanalytics_fqdn '#{analytics_fqdn}'"
+chef_ingredient 'analytics' do
+  config "topology 'standalone'\nanalytics_fqdn '#{analytics_fqdn}'"
   notifies :reconfigure, 'chef_ingredient[analytics]'
 end
 
-chef_ingredient 'analytics' do
+ingredient_config 'analytics' do
+  action :render
   notifies :reconfigure, 'chef_ingredient[analytics]'
 end
 
