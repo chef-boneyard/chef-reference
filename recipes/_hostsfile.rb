@@ -26,9 +26,11 @@ supermarket = ChefReferenceHelpers.find_machine_ip('supermarket')
 append_if_no_line 'resolve-supermarket' do
   line "#{supermarket.first['ipaddress']} #{topology['supermarket_fqdn']}"
   path '/etc/hosts'
+  not_if { ChefIngredientCookbook::Helpers.fqdn_resolves?(topology['supermarket_fqdn']) }
 end
 
 append_if_no_line 'resolve-frontend' do
   line "#{frontend.first['ipaddress']} #{topology['api_fqdn']}"
   path '/etc/hosts'
+  not_if { ChefIngredientCookbook::Helpers.fqdn_resolves?(topology['api_fqdn']) }
 end

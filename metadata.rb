@@ -3,9 +3,9 @@ maintainer 'Chef Software, Inc.'
 maintainer_email 'eng-services@chef.io'
 license 'apache2'
 description 'Reference architecture cookbook for Chef products'
-version '0.1.9'
+version '0.1.10'
 
-depends 'chef-ingredient'
+depends 'chef-ingredient', '>= 0.11.0'
 
 # TODO: remove after https://github.com/chef/chef-server/pull/465 is released
 depends 'line'
