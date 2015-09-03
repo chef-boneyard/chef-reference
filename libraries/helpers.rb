@@ -18,6 +18,15 @@
 #
 
 module ChefReferenceHelpers
+  def self.fetch_oc_id_data
+    if ::File.exist?('/etc/supermarket/oc-id-applications-supermarket.json')
+      data = Chef::JSONCompat.from_json(open('/etc/supermarket/oc-id-applications-supermarket.json').read)
+    else
+      data = { 'uid' => nil, 'secret' => nil }
+    end
+    data
+  end
+
   def self.find_machine_ip(role = 'frontend')
     s = Chef::Search::Query.new
     results = s.search(
@@ -90,4 +99,4 @@ module ChefReferenceHelpers
     # return the full config
     config.string
   end
-end
+end unless defined?(ChefReferenceHelpers)

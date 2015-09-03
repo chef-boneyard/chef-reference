@@ -18,7 +18,7 @@
 #
 node.default['chef']['chef-server']['role'] = 'supermarket'
 topology = data_bag_item('chef_server', 'topology')
-oc_id_data = Chef::JSONCompat.from_json(open('/etc/supermarket/oc-id-applications-supermarket.json').read)
+oc_id_data = ChefReferenceHelpers.fetch_oc_id_data
 
 directory '/etc/supermarket' do
   recursive true
