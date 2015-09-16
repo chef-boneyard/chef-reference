@@ -1,20 +1,20 @@
 {
-  "revision_id": "6017734d590b058223e2f018a8b5c2e9d9f0d8ab503dbbcb8cd0bcb35dd6bb5b",
+  "revision_id": "c34dd0fa7ef232954bfecd9eb56518aa6657b25720fb839e91fdb540bcd5aeee",
   "name": "analytics",
   "run_list": [
     "recipe[chef-reference::analytics]"
   ],
   "cookbook_locks": {
     "chef-reference": {
-      "version": "0.1.9",
-      "identifier": "0309477fac3f04a8acfd6c6bc5ba7f8a90a95b94",
-      "dotted_decimal_identifier": "854627619454724.47478000533095866.140233109232532",
+      "version": "0.1.11",
+      "identifier": "ed3e1cf18e93882cd2a6186e1dc1c0d699c26058",
+      "dotted_decimal_identifier": "66777863513084808.12616509791542721.212027935187032",
       "source": "..",
       "cache_key": null,
       "scm_info": {
         "scm": "git",
         "remote": "ssh://jtimberman@chef@delivery.chef.co:8989/chef/engineering-services/chef-reference",
-        "revision": "416734018770e71bc1bca9ba129ef175400ae877",
+        "revision": "60a69a8d20d9b1f4fd8df1680931fc4f7e18de62",
         "working_tree_clean": false,
         "published": true,
         "synchronized_remote_branches": [
@@ -26,14 +26,14 @@
       }
     },
     "chef-ingredient": {
-      "version": "0.11.0",
-      "identifier": "4b3a7889ab801049c6b63334dd309f730543d087",
-      "dotted_decimal_identifier": "21174912633503760.20766159145327920.175316358385799",
-      "cache_key": "chef-ingredient-0.11.0-supermarket.chef.io",
-      "origin": "https://supermarket.chef.io:443/api/v1/cookbooks/chef-ingredient/versions/0.11.0/download",
+      "version": "0.11.1",
+      "identifier": "d1832eff37436558cef35d1e5d796ad264b4e478",
+      "dotted_decimal_identifier": "58972508006073189.24997342585183609.117451865252984",
+      "cache_key": "chef-ingredient-0.11.1-supermarket.chef.io",
+      "origin": "https://supermarket.chef.io:443/api/v1/cookbooks/chef-ingredient/versions/0.11.1/download",
       "source_options": {
-        "artifactserver": "https://supermarket.chef.io:443/api/v1/cookbooks/chef-ingredient/versions/0.11.0/download",
-        "version": "0.11.0"
+        "artifactserver": "https://supermarket.chef.io:443/api/v1/cookbooks/chef-ingredient/versions/0.11.1/download",
+        "version": "0.11.1"
       }
     },
     "line": {
@@ -70,14 +70,14 @@
       }
     },
     "yum": {
-      "version": "3.6.3",
-      "identifier": "e640703e1d237cbace9ba8c078a1c6bbad379a3e",
-      "dotted_decimal_identifier": "64810095466062716.52581513614620833.218509367286334",
-      "cache_key": "yum-3.6.3-supermarket.chef.io",
-      "origin": "https://supermarket.chef.io:443/api/v1/cookbooks/yum/versions/3.6.3/download",
+      "version": "3.7.1",
+      "identifier": "d6eac9a683ba9fa5bf8d8efb3727ae13982b4836",
+      "dotted_decimal_identifier": "60493796819057311.46653985867380519.191399180585014",
+      "cache_key": "yum-3.7.1-supermarket.chef.io",
+      "origin": "https://supermarket.chef.io:443/api/v1/cookbooks/yum/versions/3.7.1/download",
       "source_options": {
-        "artifactserver": "https://supermarket.chef.io:443/api/v1/cookbooks/yum/versions/3.6.3/download",
-        "version": "3.6.3"
+        "artifactserver": "https://supermarket.chef.io:443/api/v1/cookbooks/yum/versions/3.7.1/download",
+        "version": "3.7.1"
       }
     },
     "apt": {
@@ -106,7 +106,7 @@
       ],
       [
         "chef-ingredient",
-        "= 0.11.0"
+        "= 0.11.1"
       ],
       [
         "line",
@@ -122,7 +122,7 @@
       ],
       [
         "yum",
-        "= 3.6.3"
+        "= 3.7.1"
       ],
       [
         "apt",
@@ -130,7 +130,7 @@
       ]
     ],
     "dependencies": {
-      "chef-reference (0.1.9)": [
+      "chef-reference (0.1.11)": [
         [
           "chef-ingredient",
           ">= 0.11.0"
@@ -140,7 +140,7 @@
           ">= 0.0.0"
         ]
       ],
-      "chef-ingredient (0.11.0)": [
+      "chef-ingredient (0.11.1)": [
         [
           "apt-chef",
           ">= 0.0.0"
@@ -165,7 +165,7 @@
           ">= 0.0.0"
         ]
       ],
-      "yum (3.6.3)": [
+      "yum (3.7.1)": [
 
       ],
       "apt (2.8.2)": [

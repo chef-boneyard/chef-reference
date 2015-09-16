@@ -1,5 +1,36 @@
+# Editors etc
+*~
+*#
+.#*
+\#*#
+.*.sw[a-z]
+*.un~
+
+# Bundler
+/Gemfile.lock
+/bin/
+/.bundle/
+/bundle/
+/vendor/gems/
+vendor/
+
+# Berkshelf
+Berksfile.lock
+/cookbooks/
+/vendor/cookbooks/
+
+# Vagrant
+/.vagrant/
+
+# Test Kitchen
+.kitchen
+/.kitchen.local.yml
+
+.DS_Store
+
 .chef/syntaxcache
 .chef/vms
+.chef/keys
 
 chef-zero-local/
 repo/data_bags/secrets/*.json

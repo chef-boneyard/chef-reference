@@ -1,20 +1,20 @@
 {
-  "revision_id": "7fcb037d9f7f91e2abdfca64ac2794d33ed674b2169a02cd463d3670bf2a1155",
-  "name": "server-frontend",
+  "revision_id": "833e9fd61964ab4eac4020b809d06e25c814529c0ef1037248719ef26ffa2541",
+  "name": "chef-reference",
   "run_list": [
-    "recipe[chef-reference::server-frontend]"
+    "recipe[chef-reference::default]"
   ],
   "cookbook_locks": {
     "chef-reference": {
-      "version": "0.1.11",
-      "identifier": "ed3e1cf18e93882cd2a6186e1dc1c0d699c26058",
-      "dotted_decimal_identifier": "66777863513084808.12616509791542721.212027935187032",
-      "source": "..",
+      "version": "0.1.10",
+      "identifier": "d3abba9ac3dd46084bb1d886177d88cc25a4fdea",
+      "dotted_decimal_identifier": "59580038034742598.2335027027646333.150410386275818",
+      "source": ".",
       "cache_key": null,
       "scm_info": {
         "scm": "git",
-        "remote": "ssh://jtimberman@chef@delivery.chef.co:8989/chef/engineering-services/chef-reference",
-        "revision": "60a69a8d20d9b1f4fd8df1680931fc4f7e18de62",
+        "remote": null,
+        "revision": "78a3044ab80fdd9ea204f4f1d8485aa18eb97255",
         "working_tree_clean": false,
         "published": true,
         "synchronized_remote_branches": [
@@ -22,7 +22,7 @@
         ]
       },
       "source_options": {
-        "path": ".."
+        "path": "."
       }
     },
     "chef-ingredient": {
@@ -70,14 +70,14 @@
       }
     },
     "yum": {
-      "version": "3.7.1",
-      "identifier": "d6eac9a683ba9fa5bf8d8efb3727ae13982b4836",
-      "dotted_decimal_identifier": "60493796819057311.46653985867380519.191399180585014",
-      "cache_key": "yum-3.7.1-supermarket.chef.io",
-      "origin": "https://supermarket.chef.io:443/api/v1/cookbooks/yum/versions/3.7.1/download",
+      "version": "3.6.3",
+      "identifier": "e640703e1d237cbace9ba8c078a1c6bbad379a3e",
+      "dotted_decimal_identifier": "64810095466062716.52581513614620833.218509367286334",
+      "cache_key": "yum-3.6.3-supermarket.chef.io",
+      "origin": "https://supermarket.chef.io:443/api/v1/cookbooks/yum/versions/3.6.3/download",
       "source_options": {
-        "artifactserver": "https://supermarket.chef.io:443/api/v1/cookbooks/yum/versions/3.7.1/download",
-        "version": "3.7.1"
+        "artifactserver": "https://supermarket.chef.io:443/api/v1/cookbooks/yum/versions/3.6.3/download",
+        "version": "3.6.3"
       }
     },
     "apt": {
@@ -122,7 +122,7 @@
       ],
       [
         "yum",
-        "= 3.7.1"
+        "= 3.6.3"
       ],
       [
         "apt",
@@ -130,16 +130,6 @@
       ]
     ],
     "dependencies": {
-      "chef-reference (0.1.11)": [
-        [
-          "chef-ingredient",
-          ">= 0.11.0"
-        ],
-        [
-          "line",
-          ">= 0.0.0"
-        ]
-      ],
       "chef-ingredient (0.11.1)": [
         [
           "apt-chef",
@@ -165,11 +155,21 @@
           ">= 0.0.0"
         ]
       ],
-      "yum (3.7.1)": [
+      "yum (3.6.3)": [
 
       ],
       "apt (2.8.2)": [
 
+      ],
+      "chef-reference (0.1.10)": [
+        [
+          "chef-ingredient",
+          ">= 0.11.0"
+        ],
+        [
+          "line",
+          ">= 0.0.0"
+        ]
       ]
     }
   }
