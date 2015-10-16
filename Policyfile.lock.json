@@ -1,24 +1,24 @@
 {
-  "revision_id": "c8eec841c08204624f36cb378b1c0734948429ec0772b7e105ec95a8b4f2feb7",
+  "revision_id": "337e4a2a703ccdb251a51629968bbcbc017ed672751eba623cfaf44a293f11e8",
   "name": "chef-reference",
   "run_list": [
     "recipe[chef-reference::default]"
   ],
   "cookbook_locks": {
     "chef-reference": {
-      "version": "0.2.1",
-      "identifier": "52be8c0a888fd5fa588ad9ec5d5d19aea3cb4813",
-      "dotted_decimal_identifier": "23290456771694549.70466097562541405.28237863012371",
+      "version": "0.2.2",
+      "identifier": "7ed53007f479c5f3bda89d392c25f3bc688f9c06",
+      "dotted_decimal_identifier": "35700249334151621.68606951230614565.267990533643270",
       "source": ".",
       "cache_key": null,
       "scm_info": {
         "scm": "git",
         "remote": null,
-        "revision": "04333735e6b7f76fc0419ecb5795ac998e30ad7d",
+        "revision": "ec9cad66a3d9f2e1afb34180db3f082778d3975c",
         "working_tree_clean": true,
         "published": true,
         "synchronized_remote_branches": [
-          "delivery/_for/master/jtimberman/license-clarification"
+          "delivery/_for/master/jtimberman/add-license"
         ]
       },
       "source_options": {
@@ -130,7 +130,7 @@
       ]
     ],
     "dependencies": {
-      "chef-reference (0.2.1)": [
+      "chef-reference (0.2.2)": [
         [
           "chef-ingredient",
           ">= 0.11.0"
