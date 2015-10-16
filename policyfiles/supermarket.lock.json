@@ -1,24 +1,24 @@
 {
-  "revision_id": "a522f611198b8f4a384f42c80b256773de0646b399186204015a1f3d4f93e223",
+  "revision_id": "52e924d0e5a498ec4c442b168f4e323813fa442561b1c4a2cf17626b129989d6",
   "name": "supermarket",
   "run_list": [
     "recipe[chef-reference::supermarket]"
   ],
   "cookbook_locks": {
     "chef-reference": {
-      "version": "0.2.0",
-      "identifier": "1a15dbe3e28f1a514d6e6f8d29e2ab1417340fe7",
-      "dotted_decimal_identifier": "7342383559773978.22884609826826722.188102776983527",
+      "version": "0.2.1",
+      "identifier": "e175c26ca7b6b01d4cd5ab5a7de1a23ddfd0c3e3",
+      "dotted_decimal_identifier": "63461347666933424.8247254911188449.178386631705571",
       "source": "..",
       "cache_key": null,
       "scm_info": {
         "scm": "git",
         "remote": null,
-        "revision": "cfa8bed488b209c634f434ba7af600df3c4fc096",
+        "revision": "04333735e6b7f76fc0419ecb5795ac998e30ad7d",
         "working_tree_clean": false,
         "published": true,
         "synchronized_remote_branches": [
-          "delivery/master"
+          "delivery/_for/master/jtimberman/license-clarification"
         ]
       },
       "source_options": {
@@ -130,7 +130,7 @@
       ]
     ],
     "dependencies": {
-      "chef-reference (0.2.0)": [
+      "chef-reference (0.2.1)": [
         [
           "chef-ingredient",
           ">= 0.11.0"

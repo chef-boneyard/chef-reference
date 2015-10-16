@@ -2,6 +2,10 @@
 
 Reference architecture cookbook for building a Chef Server with Chef Analytics, Supermarket. This is an open source cookbook and resides in a public GitHub repository. However it is not a "community" cookbook, as it won't be published to the [public Supermarket](https://supermarket.chef.io). It is narrow in scope for our use cases, but it can be used alongside other cookbooks to extend its use.
 
+## License Required
+
+This cookbook brings up systems that will run Chef premium features. You need to have a license for running more than 25 nodes. See [plans and pricing](https://www.chef.io/chef/#plans-and-pricing) for further details.
+
 ## Maintainers and Support
 
 This cookbook is maintained and supported by Chef's engineering services team. This cookbook runs through our internal Chef Delivery system, and changes must be approved by a member of engineering services.
