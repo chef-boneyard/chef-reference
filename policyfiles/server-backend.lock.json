@@ -1,24 +1,24 @@
 {
-  "revision_id": "9b629b8bd36bb6e9d9d0b2605f35c5222f340fefe091e013416c0047986eabba",
+  "revision_id": "4c9cbc6a276092575d93444d29e120b47c1c0ab0525950739075d5c44870c422",
   "name": "server-backend",
   "run_list": [
     "recipe[chef-reference::server-backend]"
   ],
   "cookbook_locks": {
     "chef-reference": {
-      "version": "0.1.11",
-      "identifier": "5628f2590c51af5948d9951126a442bb84140003",
-      "dotted_decimal_identifier": "24251869338292655.25131372273280676.73373142220803",
+      "version": "0.2.0",
+      "identifier": "1a15dbe3e28f1a514d6e6f8d29e2ab1417340fe7",
+      "dotted_decimal_identifier": "7342383559773978.22884609826826722.188102776983527",
       "source": "..",
       "cache_key": null,
       "scm_info": {
         "scm": "git",
         "remote": null,
-        "revision": "bea1c4446ba430eac87f65fa110e89a811a042b4",
+        "revision": "cfa8bed488b209c634f434ba7af600df3c4fc096",
         "working_tree_clean": false,
-        "published": false,
+        "published": true,
         "synchronized_remote_branches": [
-
+          "delivery/master"
         ]
       },
       "source_options": {
@@ -59,25 +59,14 @@
       }
     },
     "yum-chef": {
-      "version": "0.2.0",
-      "identifier": "015dd4dec9bee03f03acf9bf9a88449c0fae293d",
-      "dotted_decimal_identifier": "384643828924128.17736964992113288.75437068659005",
-      "cache_key": "yum-chef-0.2.0-supermarket.chef.io",
-      "origin": "https://supermarket.chef.io:443/api/v1/cookbooks/yum-chef/versions/0.2.0/download",
+      "version": "0.2.1",
+      "identifier": "5f3b1634abb57f03e54b5ce91b6318cf6e22550f",
+      "dotted_decimal_identifier": "26805089346499967.1096536774220643.27279185040655",
+      "cache_key": "yum-chef-0.2.1-supermarket.chef.io",
+      "origin": "https://supermarket.chef.io:443/api/v1/cookbooks/yum-chef/versions/0.2.1/download",
       "source_options": {
-        "artifactserver": "https://supermarket.chef.io:443/api/v1/cookbooks/yum-chef/versions/0.2.0/download",
-        "version": "0.2.0"
-      }
-    },
-    "yum": {
-      "version": "3.8.1",
-      "identifier": "6ccd4efaed9f08979ada163ef23b94382cdfe57d",
-      "dotted_decimal_identifier": "30625036585770760.42672982950081083.162968991950205",
-      "cache_key": "yum-3.8.1-supermarket.chef.io",
-      "origin": "https://supermarket.chef.io:443/api/v1/cookbooks/yum/versions/3.8.1/download",
-      "source_options": {
-        "artifactserver": "https://supermarket.chef.io:443/api/v1/cookbooks/yum/versions/3.8.1/download",
-        "version": "3.8.1"
+        "artifactserver": "https://supermarket.chef.io:443/api/v1/cookbooks/yum-chef/versions/0.2.1/download",
+        "version": "0.2.1"
       }
     },
     "apt": {
@@ -89,6 +78,17 @@
       "source_options": {
         "artifactserver": "https://supermarket.chef.io:443/api/v1/cookbooks/apt/versions/2.8.2/download",
         "version": "2.8.2"
+      }
+    },
+    "yum": {
+      "version": "3.8.1",
+      "identifier": "6ccd4efaed9f08979ada163ef23b94382cdfe57d",
+      "dotted_decimal_identifier": "30625036585770760.42672982950081083.162968991950205",
+      "cache_key": "yum-3.8.1-supermarket.chef.io",
+      "origin": "https://supermarket.chef.io:443/api/v1/cookbooks/yum/versions/3.8.1/download",
+      "source_options": {
+        "artifactserver": "https://supermarket.chef.io:443/api/v1/cookbooks/yum/versions/3.8.1/download",
+        "version": "3.8.1"
       }
     }
   },
@@ -118,19 +118,19 @@
       ],
       [
         "yum-chef",
-        "= 0.2.0"
-      ],
-      [
-        "yum",
-        "= 3.8.1"
+        "= 0.2.1"
       ],
       [
         "apt",
         "= 2.8.2"
+      ],
+      [
+        "yum",
+        "= 3.8.1"
       ]
     ],
     "dependencies": {
-      "chef-reference (0.1.11)": [
+      "chef-reference (0.2.0)": [
         [
           "chef-ingredient",
           ">= 0.11.0"
@@ -159,16 +159,16 @@
           ">= 0.0.0"
         ]
       ],
-      "yum-chef (0.2.0)": [
+      "yum-chef (0.2.1)": [
         [
           "yum",
-          "~> 3.2"
+          ">= 3.2.0"
         ]
       ],
-      "yum (3.8.1)": [
+      "apt (2.8.2)": [
 
       ],
-      "apt (2.8.2)": [
+      "yum (3.8.1)": [
 
       ]
     }

@@ -1,24 +1,24 @@
 {
-  "revision_id": "33461663775a9507162d3cfe8fa309445862fb00bc602e480c714ebe094c7d43",
+  "revision_id": "e16d63fb15e343e5044ced861776e2a4d86bb030e3505868b05cbccde65e2914",
   "name": "chef-reference",
   "run_list": [
     "recipe[chef-reference::default]"
   ],
   "cookbook_locks": {
     "chef-reference": {
-      "version": "0.1.12",
-      "identifier": "accb7616febe3b781342a1a673b440fdb15b1608",
-      "dotted_decimal_identifier": "48637404046605883.33798174106088372.71458346440200",
+      "version": "0.2.0",
+      "identifier": "5c71a5fa3770e40316819a453b7ea8fb6e304436",
+      "dotted_decimal_identifier": "26020655538860260.869170824952702.185797838914614",
       "source": ".",
       "cache_key": null,
       "scm_info": {
         "scm": "git",
         "remote": null,
-        "revision": "fc5cfa9bc44c3ccf544340190a14dc2eb88bd8b2",
+        "revision": "cfa8bed488b209c634f434ba7af600df3c4fc096",
         "working_tree_clean": false,
         "published": true,
         "synchronized_remote_branches": [
-          "delivery/_for/master/chefdk-090"
+          "delivery/master"
         ]
       },
       "source_options": {
@@ -26,14 +26,14 @@
       }
     },
     "chef-ingredient": {
-      "version": "0.12.1",
-      "identifier": "519c19b758f3ab23215feae9748115476e8573da",
-      "dotted_decimal_identifier": "22971107377738667.9888320031650945.23396541101018",
-      "cache_key": "chef-ingredient-0.12.1-supermarket.chef.io",
-      "origin": "https://supermarket.chef.io:443/api/v1/cookbooks/chef-ingredient/versions/0.12.1/download",
+      "version": "0.11.3",
+      "identifier": "37314ae88225ba8a4c087a794841ae36ade1d545",
+      "dotted_decimal_identifier": "15535321517270458.38927146084288577.191549868725573",
+      "cache_key": "chef-ingredient-0.11.3-supermarket.chef.io",
+      "origin": "https://supermarket.chef.io:443/api/v1/cookbooks/chef-ingredient/versions/0.11.3/download",
       "source_options": {
-        "artifactserver": "https://supermarket.chef.io:443/api/v1/cookbooks/chef-ingredient/versions/0.12.1/download",
-        "version": "0.12.1"
+        "artifactserver": "https://supermarket.chef.io:443/api/v1/cookbooks/chef-ingredient/versions/0.11.3/download",
+        "version": "0.11.3"
       }
     },
     "line": {
@@ -106,7 +106,7 @@
       ],
       [
         "chef-ingredient",
-        "= 0.12.1"
+        "= 0.11.3"
       ],
       [
         "line",
@@ -130,24 +130,14 @@
       ]
     ],
     "dependencies": {
-      "chef-reference (0.1.12)": [
-        [
-          "chef-ingredient",
-          ">= 0.11.0"
-        ],
-        [
-          "line",
-          ">= 0.0.0"
-        ]
-      ],
-      "chef-ingredient (0.12.1)": [
+      "chef-ingredient (0.11.3)": [
         [
           "apt-chef",
-          ">= 0.2.0"
+          ">= 0.0.0"
         ],
         [
           "yum-chef",
-          ">= 0.2.0"
+          ">= 0.0.0"
         ]
       ],
       "line (0.6.2)": [
@@ -170,6 +160,16 @@
       ],
       "yum (3.8.1)": [
 
+      ],
+      "chef-reference (0.2.0)": [
+        [
+          "chef-ingredient",
+          ">= 0.11.0"
+        ],
+        [
+          "line",
+          ">= 0.0.0"
+        ]
       ]
     }
   }
