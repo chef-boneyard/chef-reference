@@ -1,8 +1,10 @@
 # chef-reference
 
-Reference architecture cookbook for building Chef Server, Chef Analytics, and Chef Delivery. This is an open source cookbook and resides in a public GitHub repository. However it is not a "community" cookbook, as it won't be published to the [public Supermarket](https://supermarket.chef.io).
+Reference architecture cookbook for building a Chef Server with Chef Analytics, Supermarket. This is an open source cookbook and resides in a public GitHub repository. However it is not a "community" cookbook, as it won't be published to the [public Supermarket](https://supermarket.chef.io). It is narrow in scope for our use cases, but it can be used alongside other cookbooks to extend its use.
 
-**NOTE** WORK IN PROGRESS.
+## Maintainers and Support
+
+This cookbook is maintained and supported by Chef's engineering services team. This cookbook runs through our internal Chef Delivery system, and changes must be approved by a member of engineering services.
 
 ## Requirements
 
@@ -10,7 +12,7 @@ There's a few steps to take to get the provisioning node ready to launch the clu
 
 It is assumed that these steps are done in the `chef-repo`.
 
-#### Configure ~/.aws/config with default credentials
+#### Configure ~/.aws/credentials with default credentials
 
 Specify the aws access and secret access keys for the IAM user that should be launching the instances. Specify the region to use. In the Chef AWS account, I was using the us-west-2 (Oregon) region.
 
@@ -21,26 +23,17 @@ aws_secret_access_key=SECRET-ACCESS-KEY
 region=us-west-2
 ```
 
-#### Start up Chef Zero on port 7799
+Then set the `AWS_CONFIG_FILE` environment variable to point to it.
 
-There's a bug in chef-client's local mode, and I never narrowed it down. Running chef-zero separately worked. Alternatively one could use regular Chef Server like Hosted Chef.
-
-```
-chef-zero -l debug -p 7799
+```sh
+export AWS_CONFIG_FILE=~/.aws/credentials
 ```
 
-#### Create a .chef/config.rb
+#### Start up Chef Zero
 
-I used `hc-metal-provisioner` as the name of the SSH key pair. It's likely this won't match what you're using, as I have the private key for this and you don't.
-
-```ruby
-config_dir = File.dirname(__FILE__)
-chef_server_url 'http://localhost:7799'
-node_name        'chef-provisioner'
-cookbook_path [File.join(config_dir, '..', 'cookbooks')]
 ```
-
-Change the `chef_server_url` and `node_name` as appropriate if using another Chef Server.
+./script/launch-zero
+```
 
 #### Create a topology data bag item
 
@@ -63,6 +56,10 @@ This data bag item informs configuration options that (may) need to be present i
 
 #### Create a secrets data bag and populate it with the SSH keys
 
+See `./repo/data_bags/secrets/README.md` for details.
+
+In the AWS account, create the `chef-reference-arch` SSH key, and then paste its content into this data bag item, `./repo/data_bags/secrets/chef-reference-arch.json`. Be sure the string values are a single line, replacing actual newlines in the files with `\n`.
+
 ```json
 {
   "id": "chef-reference-arch",
@@ -71,11 +68,18 @@ This data bag item informs configuration options that (may) need to be present i
 }
 ```
 
-Be sure the string values are a single line, replacing actual newlines in the files with `\n`.
+If you don't use `chef-reference-arch` as the SSH key name, you'll need to change the attributes that refer to that key in the `provision` cookbook.
+
+```
+node['chef']['provisioning']['key-name']
+node['chef']['provisioning']['machine_options']['bootstrap_options']['key_name']
+```
 
 #### Create a "private-chef-secrets" data bag item
 
-Create `data_bags/secrets/private-chef-secrets-_default.json` data bag item with the following content. While `_default` won't be the environment used in "real environments" it is fine for the MVP for minimal configuration required.
+See `./repo/data_bags/secrets/README.md` for details.
+
+Create `./repo/data_bags/secrets/private-chef-secrets-_default.json` data bag item with the following content. While `_default` won't be the environment used in "real environments" it is fine for the MVP for minimal configuration required.
 
 ```json
 {
@@ -115,6 +119,8 @@ Create `data_bags/secrets/private-chef-secrets-_default.json` data bag item with
 
 #### Create a "opscode-reporting-secrets-ENV.json" data bag item
 
+See `./repo/data_bags/secrets/README.md` for details.
+
 Where ENV is, by default, `_default`.
 
 These are required for Chef Reporting and Chef Analytics to work properly. Each secret should be the specified number of characters due to the database schema.
@@ -134,33 +140,26 @@ These are required for Chef Reporting and Chef Analytics to work properly. Each 
 }
 ```
 
-#### Upload the cookbook and data bag items to the server
+#### Upload the data bags to Chef Zero
 
 ```
-knife upload data_bags cookbooks
+knife upload /data_bags
 ```
 
-Or if using berks (or policyfiles, at a future date).
+#### Run rake to build the cluster
 
 ```
-knife upload data_bags
-berks install
-berks upload
+rake
 ```
 
-#### Run chef-client on the local system (provisioning node)
+When complete, there will be four nodes:
 
-```
-chef-client -c .chef/knife.rb -o chef-reference::provisioning-cluster
-```
-
-The outcome should be:
-
-1. Frontend
-2. Backend
+1. Backend
+2. Frontend
 3. Analytics
+4. Supermarket
 
-Navigate to https://frontend-fqdn and sign up!
+Navigate to the frontend FQDN for the Chef Server management console to sign up and get started.
 
 ### Platform:
 
