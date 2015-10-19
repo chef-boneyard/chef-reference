@@ -11,9 +11,9 @@ end
 %w(server-backend server-frontend analytics supermarket).each do |role|
   desc "Update policy for #{role}"
   task role.to_sym do
-    sh("chef install policyfiles/#{role}.rb") unless File.exist?("policyfiles/#{role}.lock.json")
-    sh("chef update policyfiles/#{role}.rb")
-    sh("chef push reference policyfiles/#{role}.rb")
+    sh("chef install policies/#{role}.rb") unless File.exist?("policies/#{role}.lock.json")
+    sh("chef update policies/#{role}.rb")
+    sh("chef push reference policies/#{role}.rb")
   end
 end
 
