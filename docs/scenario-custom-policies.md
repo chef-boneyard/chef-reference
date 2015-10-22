@@ -1,6 +1,8 @@
-# Scenario: Alternative Chef Server
+# Scenario: Custom Policies
 
-This scenario describes how to set up an alternative Chef Server to running Chef Zero locally. For the example we'll use Hosted Chef, as that is in line with our use case.
+This scenario describes how to customize the policies to include a custom cookbook's recipe, and set options from the `chef provision` command to modify how the AWS provisioning is configured.
+
+This scenario combines aspects of the AWS and Alternative Chef Server scenarios as a single standalone document.
 
 ## Prerequisites
 
@@ -9,6 +11,19 @@ You must have ChefDK 0.9.0 installed on the provisioning node (e.g., your workst
 ```
 eval "$(chef shell-init `basename $SHELL`)"
 ```
+
+You must have an AWS account. Set up the aws access and secret access key credentials for the IAM user that should be launching the instances in `~/.aws/config`. Specify the region to use. For example, in Chef's AWS account, we use the us-west-2 (Oregon) region.
+
+```text
+[default]
+aws_access_key_id=ACCESS-KEY
+aws_secret_access_key=SECRET-ACCESS-KEY
+region=us-west-2
+```
+
+Ensure your AWS account has an SSH key in the `us-west-2` region. Part of this scenario is to use a custom-named key instead of the default `chef-reference-arch`, so name it whatever you like. For example, we will use `chef-2015-10`, and have downloaded the private key to `~/.ssh/chef-2015-10.pem`.
+
+You must create the secrets data bag items as described in `repo/data_bags/secrets/README.md`.
 
 Install the `knife-acl` plugin into ChefDK.
 
@@ -28,11 +43,13 @@ Sign up on the Chef Server and create a new organization on the Chef Server. For
 
 Write a `.chef/knife.rb` config file that looks something like this. Change the `chef_server_url` to the correct URL for the organization created earlier. Change the `node_name` to your username. Finally, store your private key somewhere and change `client_key` to point to it. For example, I put mine in `~/.chef/jtimberman.pem`.
 
+This differs from the [alternative chef server doc](./scenario-alternative-chef-server.md) in that it does not have the `repo` directory in the `chef_repo_path`, because we're already in a "chef repo."
+
 ```ruby
 current_dir = File.dirname(__FILE__)
-chef_repo_path File.expand_path(File.join(current_dir, '..', 'repo'))
+chef_repo_path File.expand_path(File.join(current_dir, '..'))
 
-chef_server_url 'https://api.chef.io/organizations/joshuademo'
+chef_server_url 'https://api.chef.io/organizations/joshtest'
 node_name 'jtimberman'
 client_key File.join(ENV['HOME'], '.chef', 'jtimberman.pem')
 ```
@@ -129,14 +146,16 @@ And finally, you should have the cookbook artifacts - `chef-reference`, `chef-in
 
 ## Initialize the Cluster
 
-While we have a `rake` task that will handle updating the policies, pushing them to the server, and initializing the cluster, we need to use our custom configuration with the `chef provision` command. Do that with:
+Use the `chef provision` command with the `-o` option to select the custom SSH key we used earlier and the `chef-reference` cookbook's provisioning cookbook. Assuming it is cloned in `~/dev/cookbooks/chef-reference/provision`:
 
 ```
-chef provision --no-policy --recipe cluster -c .chef/knife.rb
+chef provision --no-policy --recipe cluster \
+  --cookbook ~/dev/cookbooks/chef-reference/provision \
+  -o keyname=chef-2015-10
 ```
 
 This will take approximately 40 minutes because each node will install the omnibus packages for the various server products, and run the reconfigure step for each.
 
 ### Checkpoint
 
-See the final Checkpoint section in [scenario-aws.md](./scenario-aws.md).
+See the final Checkpoint section in the [AWS scenario](./scenario-aws.md).

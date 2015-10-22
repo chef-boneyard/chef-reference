@@ -88,8 +88,8 @@ Be sure the string values are a single line, replacing actual newlines in the fi
 ```json
 {
   "id": "chef-reference-arch",
-  "private_ssh_key": "ssh-rsa ....",
-  "public_ssh_key": "-----BEGIN RSA PRIVATE KEY-----\n ... -----END RSA PRIVATE KEY-----\n"
+  "private_ssh_key": "-----BEGIN RSA PRIVATE KEY-----\n ... -----END RSA PRIVATE KEY-----\n"
+  "public_ssh_key": "ssh-rsa ....",
 }
 ```
 
@@ -98,8 +98,8 @@ And for Vagrant it looks like this:
 ```json
 {
   "id": "vagrant",
-  "private_ssh_key": "ssh-rsa ....",
-  "public_ssh_key": "-----BEGIN RSA PRIVATE KEY-----\n ... -----END RSA PRIVATE KEY-----\n"
+  "private_ssh_key": "-----BEGIN RSA PRIVATE KEY-----\n ... -----END RSA PRIVATE KEY-----\n"
+  "public_ssh_key": "ssh-rsa ....",
 }
 ```
 

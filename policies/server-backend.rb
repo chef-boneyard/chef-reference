@@ -5,6 +5,6 @@
 
 name 'server-backend'
 run_list 'chef-reference::server-backend'
-default_source :community
+default_source :supermarket
 
 cookbook 'chef-reference', path: File.join(File.dirname(__FILE__), '..')

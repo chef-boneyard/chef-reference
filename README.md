@@ -26,9 +26,15 @@ Other platforms may be added in the future according to the [platforms that Chef
 
 ## Attributes
 
-See `attributes/default.rb` for default values for the `chef-reference` cookbook, and `provision/attributes/default.rb` for default values for the Chef Provisioning cookbook.
+See `attributes/default.rb` for default values for the `chef-reference` cookbook. The `provision` cookbook in this repository has attributes that can be modified for chef-provisioning.
 
-This cookbook is designed primarily to be used with AWS as that is our use case. However, by modifying the various `driver` attributes, other providers may be usable. An example of doing this with [Vagrant](https://vagrantup.com) is provided via the `provision::dev` recipe.
+This cookbook is designed primarily to be used with AWS as that is our use case. However, by modifying the various `driver` attributes, other providers may be usable. An example of doing this with [Vagrant](https://vagrantup.com) is provided via the `provision::dev` recipe. The following aspects of AWS configuration can be modified using the `chef provision` command's `--opts` (`-o`) argument. Pass it multiple times to change multiple values.
+
+* `aws_region`: the AWS region, default is `us-west-2`
+* `key_name`: the SSH key to use, default is `chef-reference-arch`
+* `ssh_user`: the user to login with SSH, default is `ec2-user`
+* `image_id`: the AMI, default is the RHEL 7 image
+* `instance_type`: instance size to use, default is `m3.medium`
 
 ## Documentation
 
