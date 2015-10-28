@@ -35,3 +35,9 @@ Berksfile.lock
 chef-zero-local/
 repo/data_bags/secrets/*.json
 .delivery/cli.toml
+
+.chef/*.pem
+.chef/knife.rb
+.chef/custom.rb
+.chef/hosted.rb
+actor-map.yaml

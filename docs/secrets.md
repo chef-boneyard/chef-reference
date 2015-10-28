@@ -1,10 +1,16 @@
 Data bag items of secrets for the cluster go here.
 
-The passwords in the Chef Server database have character constraints, so use the same number of characters as these passwords. These were generated randomly on a test node. You should adjust them to your own values when creating the data bag items on your Chef Server.
+The passwords in the Chef Server database have character constraints, so use the same number of characters as these passwords. These were generated randomly on a test node to serve as examples! **IMPORTANT** You should adjust them to your own values when creating the data bag items on your Chef Server.
+
+The secrets data bag items named in each heading should go into this directory (`./repo/data_bags/secrets` from the `chef-reference` cookbook).
+
+**Chef Environments** While this cookbook uses Chef Policies instead of Chef's environments, older iterations of the code base used environments, and we haven't updated that code yet. When we switch to something else we will update the CHANGELOG.md at the toplevel of the cookbook.
 
 ## `private-chef-secrets-_default.json`
 
-These are required for all members of the Chef Server cluster.
+This is required on all the Chef Server nodes.
+
+Create `private-chef-secrets-_default.json` data bag item with the following content.
 
 ```json
 {
@@ -47,7 +53,9 @@ These are required for all members of the Chef Server cluster.
 
 ## `opscode-reporting-secrets-_default.json`
 
-These are required for Chef Reporting and Chef Analytics to work properly.
+These are required for Chef Reporting (frontend and backend), and Chef Analytics to work properly.
+
+Create `opscode-reporting-secrets-_default.json` data bag item with the following content.
 
 ```json
 {
@@ -66,12 +74,33 @@ These are required for Chef Reporting and Chef Analytics to work properly.
 
 ## `ssh-key-name.json`
 
-These ssh keys are used by Chef Provisioning. The name of this data bag should match `node['chef']['provisioning']['keyname']` attribute.
+These ssh keys are used by Chef Provisioning in the `provision::cluster` recipe . The name of this data bag item should match these attributes:
+
+```
+node['chef']['provisioning']['key-name']
+node['chef']['provisioning']['machine_options']['bootstrap_options']['key_name']
+```
+
+For example, when using AWS for provisioning by default the `id` is `chef-reference-arch` and the filename is `chef-reference-arch.json`. When using Vagrant for provisioning, the `id` is `vagrant` and the filename is `vagrant.json`.
+
+Be sure the string values are a single line, replacing actual newlines in the files with `\n`. For example, for AWS it would look like this:
 
 ```json
 {
-  "id": "ssh-key-name",
-  "private_ssh_key": "ssh-rsa ....",
-  "public_ssh_key": "-----BEGIN RSA PRIVATE KEY-----\n ... -----END RSA PRIVATE KEY-----\n"
+  "id": "chef-reference-arch",
+  "private_ssh_key": "-----BEGIN RSA PRIVATE KEY-----\n ... -----END RSA PRIVATE KEY-----\n"
+  "public_ssh_key": "ssh-rsa ....",
 }
 ```
+
+And for Vagrant it looks like this:
+
+```json
+{
+  "id": "vagrant",
+  "private_ssh_key": "-----BEGIN RSA PRIVATE KEY-----\n ... -----END RSA PRIVATE KEY-----\n"
+  "public_ssh_key": "ssh-rsa ....",
+}
+```
+
+Replace the values with the actual public and private SSH keys.

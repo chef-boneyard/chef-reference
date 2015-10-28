@@ -1,6 +1,6 @@
 # chef-reference
 
-Reference architecture cookbook for building a Chef Server with Chef Analytics, Supermarket. This is an open source cookbook and resides in a public GitHub repository. However it is not a "community" cookbook, as it won't be published to the [public Supermarket](https://supermarket.chef.io). It is narrow in scope for our use cases, but it can be used alongside other cookbooks to extend its use.
+This is a reference architecture cookbook for building a Chef Server with Chef Analytics and Supermarket. This is an open source cookbook and resides in a public GitHub repository. However it is not a "community" cookbook, as it won't be published to the [public Supermarket](https://supermarket.chef.io). It is narrow in scope for our use cases, but it can be used alongside other cookbooks.
 
 ## License Required
 
@@ -12,164 +12,13 @@ This cookbook is maintained and supported by Chef's engineering services team. T
 
 ## Requirements
 
-There's a few steps to take to get the provisioning node ready to launch the cluster. This assumes a `chef-repo` is used and the cookbook is being used locally (e.g., berks installed into a vendor path, or a symlink to the cookbook's repository).
-
-It is assumed that these steps are done in the `chef-repo`.
-
-#### Configure ~/.aws/credentials with default credentials
-
-Specify the aws access and secret access keys for the IAM user that should be launching the instances. Specify the region to use. In the Chef AWS account, I was using the us-west-2 (Oregon) region.
-
-```text
-[default]
-aws_access_key_id=ACCESS-KEY
-aws_secret_access_key=SECRET-ACCESS-KEY
-region=us-west-2
-```
-
-Then set the `AWS_CONFIG_FILE` environment variable to point to it.
-
-```sh
-export AWS_CONFIG_FILE=~/.aws/credentials
-```
-
-#### Start up Chef Zero
-
-```
-./script/launch-zero
-```
-
-#### Create a topology data bag item
-
-This data bag item informs configuration options that (may) need to be present in `/etc/opscode/chef-server.rb`.
-
-```json
-{
-  "id": "topology",
-  "topology": "tier",
-  "disabled_svcs": [],
-  "enabled_svcs": [],
-  "vips": [],
-  "dark_launch": {
-    "actions": true
-  },
-  "api_fqdn": "api.chef.sh",
-  "notification_email": "ops@example.com"
-}
-```
-
-#### Create a secrets data bag and populate it with the SSH keys
-
-See `./repo/data_bags/secrets/README.md` for details.
-
-In the AWS account, create the `chef-reference-arch` SSH key, and then paste its content into this data bag item, `./repo/data_bags/secrets/chef-reference-arch.json`. Be sure the string values are a single line, replacing actual newlines in the files with `\n`.
-
-```json
-{
-  "id": "chef-reference-arch",
-  "private_ssh_key": "BEGIN RSA KEY blah blah snip",
-  "public_ssh_key": "ssh-rsa blah blah blah"
-}
-```
-
-If you don't use `chef-reference-arch` as the SSH key name, you'll need to change the attributes that refer to that key in the `provision` cookbook.
-
-```
-node['chef']['provisioning']['key-name']
-node['chef']['provisioning']['machine_options']['bootstrap_options']['key_name']
-```
-
-#### Create a "private-chef-secrets" data bag item
-
-See `./repo/data_bags/secrets/README.md` for details.
-
-Create `./repo/data_bags/secrets/private-chef-secrets-_default.json` data bag item with the following content. While `_default` won't be the environment used in "real environments" it is fine for the MVP for minimal configuration required.
-
-```json
-{
-  "id": "private-chef-secrets-_default",
-  "data": {
-    "rabbitmq": {
-      "password": "SOMETHINGRANDOMLYAWESOMELIKEASHA512",
-      "jobs_password": "SOMETHINGRANDOMLYAWESOMELIKEASHA512",
-      "actions_password": "SOMETHINGRANDOMLYAWESOMELIKEASHA512"
-    },
-    "postgresql": {
-      "sql_password": "SOMETHINGRANDOMLYAWESOMELIKEASHA512",
-      "sql_ro_password": "SOMETHINGRANDOMLYAWESOMELIKEASHA512"
-    },
-    "oc_id": {
-      "sql_password": "SOMETHINGRANDOMLYAWESOMELIKEASHA512",
-      "secret_key_base": "SOMETHINGRANDOMLYAWESOMELIKEASHA512"
-    },
-    "drbd": {
-      "shared_secret": "THISISSHORTERTHANTHEOTHERSRANDOMLYGENERATED"
-    },
-    "keepalived": {
-      "vrrp_instance_password": "SOMETHINGRANDOMLYAWESOMELIKEASHA512"
-    },
-    "oc_bifrost": {
-      "superuser_id": "SOMETHINGTHIRTYTWOCHARACTERS",
-      "sql_password": "SOMETHINGRANDOMLYAWESOMELIKEASHA512",
-      "sql_ro_password": "SOMETHINGRANDOMLYAWESOMELIKEASHA512"
-    },
-    "bookshelf": {
-      "access_key_id": "SOMETHINGTHIRTYTWOCHARACTERS",
-      "secret_access_key": "SOMETHINGRANDOMLYAWESOMELIKEASHA512"
-    }
-  }
-}
-```
-
-#### Create a "opscode-reporting-secrets-ENV.json" data bag item
-
-See `./repo/data_bags/secrets/README.md` for details.
-
-Where ENV is, by default, `_default`.
-
-These are required for Chef Reporting and Chef Analytics to work properly. Each secret should be the specified number of characters due to the database schema.
-
-```json
-{
-  "id": "opscode-reporting-secrets-_default",
-  "data": {
-    "postgresql": {
-      "sql_password": "One-hundred characters",
-      "sql_ro_password": "One-hundred characters"
-    },
-    "opscode_reporting": {
-      "rabbitmq_password": "One-hundred characters"
-    }
-  }
-}
-```
-
-#### Upload the data bags to Chef Zero
-
-```
-knife upload /data_bags
-```
-
-#### Run rake to build the cluster
-
-```
-rake
-```
-
-When complete, there will be four nodes:
-
-1. Backend
-2. Frontend
-3. Analytics
-4. Supermarket
-
-Navigate to the frontend FQDN for the Chef Server management console to sign up and get started.
+Local development and use requires ChefDK 0.9.0 or higher.
 
 ### Platform:
 
-64 bit CentOS 7.1
+64 bit Red Hat Enterprise Linux 7.1 or CentOS 7.1
 
-Other platforms may be added in the future according to the platforms that CHEF supports for Chef Server 12.
+Other platforms may be added in the future according to the [platforms that Chef Server 12 supports](https://docs.chef.io/supported_platforms.html).
 
 ### Cookbooks:
 
@@ -177,27 +26,32 @@ Other platforms may be added in the future according to the platforms that CHEF 
 
 ## Attributes
 
-See `attributes/default.rb` for default values.
+See `attributes/default.rb` for default values for the `chef-reference` cookbook. The `provision` cookbook in this repository has attributes that can be modified for chef-provisioning.
 
-This cookbook is designed primarily to be used with AWS as that is our use case. However, by modifying the various `driver` attributes, other providers may be usable. This is unsupported, and may require additional configuration consideration.
+This cookbook is designed primarily to be used with AWS as that is our use case. However, by modifying the various `driver` attributes, other providers may be usable. An example of doing this with [Vagrant](https://vagrantup.com) is provided via the `provision::dev` recipe. The following aspects of AWS configuration can be modified using the `chef provision` command's `--opts` (`-o`) argument. Pass it multiple times to change multiple values.
+
+* `aws_region`: the AWS region, default is `us-west-2`
+* `key_name`: the SSH key to use, default is `chef-reference-arch`
+* `ssh_user`: the user to login with SSH, default is `ec2-user`
+* `image_id`: the AMI, default is the RHEL 7 image
+* `instance_type`: instance size to use, default is `m3.medium`
 
 ## Documentation
 
-This README serves as the only documentation for the cookbook at this time.
+See the [docs directory](./docs) in this repository for additional documentation:
+
+* [README.md](./docs/README.md): more background and detail
+* [getting-started.md](./docs/getting-started.md): how to get started
+* [scenario-aws.md](./docs/scenario-aws.md): using AWS for a new cluster, this is the default use case
+* [secrets.md](./docs/secrets.md): how to use the required secrets
 
 Chef Server documentation:
 
 * https://docs.chef.io/server/
 
-Chef Server configuration settings:
-
-* http://docs.chef.io/open_source/config_rb_chef_server_optional_settings.html
-
 ## Issues
 
-Please report issues in this repository. Please also understand that this cookbook is intended to be narrow and opinionated in scope, and may not work for all use cases.
-
-* https://github.com/chef-cookbooks/chef-reference/issues
+Please report [issues in this repository](https://github.com/chef-cookbooks/chef-reference/issues). Please also understand that this cookbook is intended to be narrow and opinionated in scope, and may not work for all use cases.
 
 ## License and Author
 

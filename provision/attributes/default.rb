@@ -17,10 +17,12 @@
 # limitations under the License.
 #
 
+context_opts = ChefDK::ProvisioningData.context.opts
+
 default['chef']['provisioning'].tap do |provisioning|
   # TODO: (jtimberman) We have this here, and then in the machine_options below,
   # and repetition makes us sad pandas.
-  provisioning['key-name'] = 'chef-reference-arch'
+  provisioning['key-name'] = context_opts.key_name || context_opts.keyname || 'chef-reference-arch'
 
   # we default to the aws driver, but by overriding this attribute
   # elsewhere (like a role, or a wrapper cookbook), other drivers should
@@ -32,7 +34,7 @@ default['chef']['provisioning'].tap do |provisioning|
         'require' => 'chef/provisioning/aws_driver'
       }
     ],
-    'with-parameter' => 'aws::us-west-2'
+    'with-parameter' => "aws::#{context_opts.region || 'us-west-2'}"
   }
 
   # these use _ instead of - because it maps to the machine_options in
@@ -41,10 +43,10 @@ default['chef']['provisioning'].tap do |provisioning|
     'ssh_username' => 'ec2-user',
     'use_private_ip_for_ssh' => false,
     'bootstrap_options' => {
-      'key_name' => 'chef-reference-arch',
+      'key_name' => context_opts.key_name || context_opts.keyname || 'chef-reference-arch',
       # https://aws.amazon.com/marketplace/pp/B00VIMU19E, us-west-2 region
-      'image_id' => 'ami-4dbf9e7d',
-      'instance_type' => 'm3.medium'
+      'image_id' => context_opts.image_id || context_opts.ami || 'ami-4dbf9e7d',
+      'instance_type' => context_opts.instance_type || 'm3.medium'
     }
   }
 

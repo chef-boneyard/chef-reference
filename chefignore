@@ -94,3 +94,8 @@ Vagrantfile
 # Travis #
 ##########
 .travis.yml
+
+# Chef Config #
+###############
+.chef
+actor-map.yaml

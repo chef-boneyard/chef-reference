@@ -1,0 +1,14 @@
+# Run this with `knife exec script/hosts-entries` from the toplevel directory
+node_list = nodes.search('ec2_instance_id:*')
+topo = api.get('/data/chef_server/topology')
+
+node_list.each do |n|
+  case n.name
+  when 'server-frontend'
+    puts "#{n['ec2']['public_ipv4']} #{topo['api_fqdn']}"
+  when 'analytics'
+    puts "#{n['ec2']['public_ipv4']} #{topo['analytics_fqdn']}"
+  when 'supermarket'
+    puts "#{n['ec2']['public_ipv4']} #{topo['supermarket_fqdn']}"
+  end
+end
