@@ -15,7 +15,8 @@ def topology_data_bag
       'topology'         => 'tier',
       'api_fqdn'         => 'chef.chefspec.example.com',
       'analytics_fqdn'   => 'analytics.chefspec.example.com',
-      'supermarket_fqdn' => 'supermarket.chefspec.example.com'
+      'supermarket_fqdn' => 'supermarket.chefspec.example.com',
+      'compliance_fqdn'  => 'compliance.chefspec.example.com'
     }
   }
 end

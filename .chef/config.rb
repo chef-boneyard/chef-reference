@@ -8,6 +8,5 @@ chef_server_url 'http://localhost:7788'
 node_name 'dummy'
 client_key File.join(current_dir, 'dummy.pem')
 
-use_policyfile true
 versioned_cookbooks true
 policy_document_native_api false

@@ -47,11 +47,15 @@ knife group create provisioners -c .chef/knife.rb
 for i in read create update grant delete
 do
   knife acl add containers clients $i group provisioners -c .chef/knife.rb
+  knife acl add containers nodes $i group provisioners -c .chef/knife.rb
 done
 
-for i in read create update grant delete
+for i in read create update delete
 do
-  knife acl add containers nodes $i group provisioners -c .chef/knife.rb
+  knife acl add containers sandboxes $i group provisioners -c .chef/knife.rb
+  knife acl add containers cookbook_artifacts $i group provisioners -c .chef/knife.rb
+  knife acl add containers policies $i group provisioners -c .chef/knife.rb
+  knife acl add containers policy_groups $i group provisioners -c .chef/knife.rb
 done
 
 knife client create chef-reference-provisioner -c .chef/knife.rb -d > .chef/chef-reference-provisioner.pem

@@ -54,6 +54,12 @@ machine_batch do
     attribute %w(chef chef-server role), 'supermarket'
     run_list []
   end
+
+  machine 'compliance' do
+    machine_options ChefHelpers.get_machine_options(node, 'compliance')
+    attribute %w(chef chef-server role), 'compliance'
+    run_list []
+  end
 end
 
 machine 'server-backend' do
@@ -107,3 +113,12 @@ machine 'supermarket' do
     '/etc/supermarket/oc-id-applications-supermarket.json' => '/tmp/stash/oc-id-applications-supermarket.json'
   )
 end
+
+machine 'compliance' do
+  chef_config ChefHelpers.use_policyfiles('compliance')
+  action :converge
+  converge true
+end
+
+# We set solo to false in `_setup`, set it back to true here.
+Chef::Config[:solo] = true

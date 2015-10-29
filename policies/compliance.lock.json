@@ -1,8 +1,8 @@
 {
-  "revision_id": "ad9a305e03409c2e6721f28ff3bcae65f0708ee2b65cbcd73b2fcddffa838cad",
-  "name": "supermarket",
+  "revision_id": "f2ddf7a667e795095dbe18d13d5459ab56435a52aa2f219051fcfb411d91c4da",
+  "name": "compliance",
   "run_list": [
-    "recipe[chef-reference::supermarket]"
+    "recipe[chef-reference::compliance]"
   ],
   "cookbook_locks": {
     "chef-reference": {
