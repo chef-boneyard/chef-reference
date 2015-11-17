@@ -35,6 +35,8 @@ This cookbook is designed primarily to be used with AWS as that is our use case.
 * `ssh_user`: the user to login with SSH, default is `ec2-user`
 * `image_id`: the AMI, default is the RHEL 7 image
 * `instance_type`: instance size to use, default is `m3.medium`
+* `subnet_id`: the network id to use, which should automatically place instances in the right VPC
+* `security_group_ids`: security group that the instances should be in, specify only one
 
 ## Documentation
 

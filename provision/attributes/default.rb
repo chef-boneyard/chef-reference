@@ -46,6 +46,8 @@ default['chef']['provisioning'].tap do |provisioning|
       'key_name' => context_opts.key_name || context_opts.keyname || 'chef-reference-arch',
       # https://aws.amazon.com/marketplace/pp/B00VIMU19E, us-west-2 region
       'image_id' => context_opts.image_id || context_opts.ami || 'ami-4dbf9e7d',
+      'subnet_id' => context_opts.subnet_id || context_opts.subnet || 'subnet-19ac017c',
+      'security_group_ids' => Array(context_opts.security_group_ids || context_opts.security_group || 'sg-96274af3'),
       'instance_type' => context_opts.instance_type || 'm3.medium'
     }
   }

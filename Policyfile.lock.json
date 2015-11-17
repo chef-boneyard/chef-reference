@@ -1,24 +1,24 @@
 {
-  "revision_id": "d34ddcbd64dd5e384c3c172df05cadd7362c40db7454106ca5bfa6b3b781ba93",
+  "revision_id": "d555de29cd1061531176062c3ef1ddc7a91a01b09514044389182ce08e5209ad",
   "name": "chef-reference",
   "run_list": [
     "recipe[chef-reference::default]"
   ],
   "cookbook_locks": {
     "chef-reference": {
-      "version": "0.4.2",
-      "identifier": "ca0a528c662d78ed17243c81eea93383e5b15d6a",
-      "dotted_decimal_identifier": "56869294954655096.66735013881835177.56641587338602",
+      "version": "0.5.0",
+      "identifier": "cf8e6fb19f710ed5700d9a92323b06005ecfb09b",
+      "dotted_decimal_identifier": "58421930551636238.60077373769527867.6598660436123",
       "source": ".",
       "cache_key": null,
       "scm_info": {
         "scm": "git",
         "remote": null,
-        "revision": "0f8591fbaffb7764daba53833611e5aa38219037",
+        "revision": "471eb922cc91954ce010b376c57dc7ce930f3783",
         "working_tree_clean": false,
-        "published": true,
+        "published": false,
         "synchronized_remote_branches": [
-          "delivery/_for/master/jtimberman/dont-skip-provision"
+
         ]
       },
       "source_options": {
@@ -130,16 +130,6 @@
       ]
     ],
     "dependencies": {
-      "chef-reference (0.4.2)": [
-        [
-          "chef-ingredient",
-          ">= 0.13.1"
-        ],
-        [
-          "line",
-          ">= 0.0.0"
-        ]
-      ],
       "chef-ingredient (0.14.0)": [
         [
           "apt-chef",
@@ -170,6 +160,16 @@
       ],
       "yum (3.8.2)": [
 
+      ],
+      "chef-reference (0.5.0)": [
+        [
+          "chef-ingredient",
+          ">= 0.13.1"
+        ],
+        [
+          "line",
+          ">= 0.0.0"
+        ]
       ]
     }
   }
