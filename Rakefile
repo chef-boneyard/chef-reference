@@ -1,5 +1,5 @@
 desc 'Make everything happen'
-task default: %i(server-backend server-frontend analytics supermarket) do
+task default: %i(server-backend server-frontend analytics supermarket compliance) do
   sh('chef provision --no-policy --recipe cluster -c .chef/config.rb')
 end
 
