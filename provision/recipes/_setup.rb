@@ -16,6 +16,12 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+# `chef provision` is a frontend for a chef-solo run, it uses solo so
+# it doesn't try to sync cookbooks from a Chef Server. Setting `solo`
+# to false here is required, otherwise we will get exceptions on
+# loading data bag items, because solo tries to use a local directory,
+# instead of the Chef Server API.
+Chef::Config[:solo] = false
 
 node['chef']['provisioning']['driver']['gems'].each do |g|
   chef_gem g['name'] do # ~FC009

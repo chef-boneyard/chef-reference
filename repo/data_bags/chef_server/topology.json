@@ -1,8 +1,9 @@
 {
   "id": "topology",
   "topology": "tier",
-  "api_fqdn": "chef.example.com",
-  "analytics_fqdn": "analytics.example.com",
-  "supermarket_fqdn": "supermarket.example.com",
-  "notification_email": "ops@example.com"
+  "api_fqdn": "chef-reference.chef.co",
+  "analytics_fqdn": "analytics-reference.chef.co",
+  "supermarket_fqdn": "supermarket-reference.chef.co",
+  "compliance_fqdn": "compliance-reference.chef.co",
+  "notification_email": "eng-services@chef.io"
 }

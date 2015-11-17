@@ -21,7 +21,7 @@ include_recipe 'provision::_setup'
 
 machine_batch do
   action :destroy
-  %w(analytics server-frontend server-backend supermarket).each do |m|
+  %w(analytics server-frontend server-backend supermarket compliance).each do |m|
     machine m
   end
 end
