@@ -78,4 +78,39 @@ EOH
       expect(chef_run).to install_chef_ingredient('reporting')
     end
   end
+
+  context 'running the recipe with wildcard cert data' do
+    let(:chef_run) do
+      ChefSpec::ServerRunner.new do |node, server|
+        server.create_data_bag('chef_server', topology_data_bag)
+        server.create_data_bag('secrets', secrets_data_bag.merge(
+                                            'wildcard-ssl' => {
+                                              'data' => {
+                                                'pem' => 'pem file'
+                                              }
+                                            }
+        ))
+        node.automatic['ipaddress'] = '10.10.10.2'
+        node.automatic['hostname'] = 'server-frontend-b8821cd9'
+        node.automatic['fqdn'] = 'server-frontend-b8821cd9.chefspec.example.com'
+        server.create_node('server-backend', server_backend_node)
+        server.create_node('server-frontend', server_frontend_node)
+      end.converge(described_recipe)
+    end
+
+    before(:each) do
+      allow_any_instance_of(Chef::Recipe).to receive(:include_recipe)
+        .and_return(true)
+    end
+
+    it 'creates the certificate directory' do
+      expect(chef_run).to create_directory('/var/opt/opscode/nginx/ca').with(recursive: true)
+    end
+
+    it 'creates the pem file' do
+      expect(chef_run).to create_file('/var/opt/opscode/nginx/ca/chef.chefspec.example.com.pem').with(
+        content: 'pem file'
+      )
+    end
+  end
 end

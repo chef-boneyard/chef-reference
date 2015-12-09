@@ -1,20 +1,20 @@
 {
-  "revision_id": "fdb878e358be6ea74bdf6ef206384f5c085a5bbcd3998a166b866f3d4fa1cd32",
+  "revision_id": "7b12039e7b7b66774e5d161d28b6bbdb31ca6e616f08b0a620ae1341f0e544f7",
   "name": "compliance",
   "run_list": [
     "recipe[chef-reference::compliance]"
   ],
   "cookbook_locks": {
     "chef-reference": {
-      "version": "0.5.0",
-      "identifier": "d92e2a08410263e76b92f77ba8b087885e378e04",
-      "dotted_decimal_identifier": "61130828008194659.65138998581635248.149019766001156",
+      "version": "0.6.0",
+      "identifier": "64080bf6effa74af2ba9e0bda7000625a80430b9",
+      "dotted_decimal_identifier": "28156345151650420.49306129544357632.6758802403513",
       "source": "..",
       "cache_key": null,
       "scm_info": {
         "scm": "git",
         "remote": null,
-        "revision": "471eb922cc91954ce010b376c57dc7ce930f3783",
+        "revision": "f9c632490425428f2ca94b61070e1ccfe94e6139",
         "working_tree_clean": false,
         "published": false,
         "synchronized_remote_branches": [
@@ -26,14 +26,14 @@
       }
     },
     "chef-ingredient": {
-      "version": "0.14.0",
-      "identifier": "5d287d13d94072959bb0aa170bd36bb560abdbd4",
-      "dotted_decimal_identifier": "26221690503118962.42110954600074195.118426755128276",
-      "cache_key": "chef-ingredient-0.14.0-supermarket.chef.io",
-      "origin": "https://supermarket.chef.io:443/api/v1/cookbooks/chef-ingredient/versions/0.14.0/download",
+      "version": "0.15.0",
+      "identifier": "5a11fd5d628571d847383cf0ee34d2e74d73ea4e",
+      "dotted_decimal_identifier": "25352527795094897.60876901835664948.231890878720590",
+      "cache_key": "chef-ingredient-0.15.0-supermarket.chef.io",
+      "origin": "https://supermarket.chef.io:443/api/v1/cookbooks/chef-ingredient/versions/0.15.0/download",
       "source_options": {
-        "artifactserver": "https://supermarket.chef.io:443/api/v1/cookbooks/chef-ingredient/versions/0.14.0/download",
-        "version": "0.14.0"
+        "artifactserver": "https://supermarket.chef.io:443/api/v1/cookbooks/chef-ingredient/versions/0.15.0/download",
+        "version": "0.15.0"
       }
     },
     "line": {
@@ -59,14 +59,14 @@
       }
     },
     "yum-chef": {
-      "version": "0.2.1",
-      "identifier": "5f3b1634abb57f03e54b5ce91b6318cf6e22550f",
-      "dotted_decimal_identifier": "26805089346499967.1096536774220643.27279185040655",
-      "cache_key": "yum-chef-0.2.1-supermarket.chef.io",
-      "origin": "https://supermarket.chef.io:443/api/v1/cookbooks/yum-chef/versions/0.2.1/download",
+      "version": "0.2.2",
+      "identifier": "553d3d67c38f86878323108e5257f38ef8a689ae",
+      "dotted_decimal_identifier": "23992706963574662.38143308480795223.267795382569390",
+      "cache_key": "yum-chef-0.2.2-supermarket.chef.io",
+      "origin": "https://supermarket.chef.io:443/api/v1/cookbooks/yum-chef/versions/0.2.2/download",
       "source_options": {
-        "artifactserver": "https://supermarket.chef.io:443/api/v1/cookbooks/yum-chef/versions/0.2.1/download",
-        "version": "0.2.1"
+        "artifactserver": "https://supermarket.chef.io:443/api/v1/cookbooks/yum-chef/versions/0.2.2/download",
+        "version": "0.2.2"
       }
     },
     "apt": {
@@ -106,7 +106,7 @@
       ],
       [
         "chef-ingredient",
-        "= 0.14.0"
+        "= 0.15.0"
       ],
       [
         "line",
@@ -118,7 +118,7 @@
       ],
       [
         "yum-chef",
-        "= 0.2.1"
+        "= 0.2.2"
       ],
       [
         "apt",
@@ -130,7 +130,7 @@
       ]
     ],
     "dependencies": {
-      "chef-reference (0.5.0)": [
+      "chef-reference (0.6.0)": [
         [
           "chef-ingredient",
           ">= 0.13.1"
@@ -140,7 +140,7 @@
           ">= 0.0.0"
         ]
       ],
-      "chef-ingredient (0.14.0)": [
+      "chef-ingredient (0.15.0)": [
         [
           "apt-chef",
           ">= 0.2.0"
@@ -159,7 +159,7 @@
           ">= 0.0.0"
         ]
       ],
-      "yum-chef (0.2.1)": [
+      "yum-chef (0.2.2)": [
         [
           "yum",
           ">= 3.2.0"

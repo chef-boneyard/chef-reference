@@ -6,7 +6,7 @@ require 'chefspec/policyfile'
 RSpec.configure do |config|
   config.color = true
   config.formatter = 'doc'
-  config.log_level = :error
+  config.log_level = :fatal
 end
 
 def topology_data_bag

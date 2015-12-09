@@ -5,10 +5,12 @@ topo = api.get('/data/chef_server/topology')
 node_list.each do |n|
   case n.name
   when 'server-frontend'
-    puts "#{n['ec2']['public_ipv4']} #{topo['api_fqdn']}"
+    puts "#{n['ipaddress']} #{topo['api_fqdn']}"
   when 'analytics'
-    puts "#{n['ec2']['public_ipv4']} #{topo['analytics_fqdn']}"
+    puts "#{n['ipaddress']} #{topo['analytics_fqdn']}"
   when 'supermarket'
-    puts "#{n['ec2']['public_ipv4']} #{topo['supermarket_fqdn']}"
+    puts "#{n['ipaddress']} #{topo['supermarket_fqdn']}"
+  when 'compliance'
+    puts "#{n['ipaddress']} #{topo['compliance_fqdn']}"
   end
 end
