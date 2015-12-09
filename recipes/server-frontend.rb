@@ -53,6 +53,33 @@ chef_server_config = data_bag_item('chef_server', 'topology').to_hash
 chef_server_config.delete('id')
 node.default['chef']['chef-server']['configuration'].merge!(chef_server_config)
 
+# Attempt to load a wildcard certificate secret. If it fails, continue
+# on and rely on the self-signed certs from `reconfigure`. We only
+# support wildcard certificates.
+begin
+  wildcard_cert = data_bag_item('secrets', 'wildcard-ssl')['data']
+rescue Net::HTTPServerException
+  Chef::Log.debug('Could not load data bag item secrets/wildcard-ssl, will default')
+  Chef::Log.debug('to self-signed SSL certificates from `ctl reconfigure`')
+  wildcard_cert = false
+end
+
+if wildcard_cert
+  directory '/var/opt/opscode/nginx/ca' do
+    recursive true
+  end
+
+  wildcard_cert.keys.each do |ext|
+    next unless wildcard_cert[ext]
+
+    file "/var/opt/opscode/nginx/ca/#{chef_server_config['api_fqdn']}.#{ext}" do
+      content wildcard_cert[ext]
+      sensitive true
+      notifies :restart, 'omnibus_service[chef-server/nginx]'
+    end
+  end
+end
+
 chef_ingredient 'chef-server' do
   action :install
   config <<-CONFIG
@@ -87,5 +114,7 @@ end
 chef_ingredient 'reporting' do
   notifies :reconfigure, 'chef_ingredient[reporting]'
 end
+
+omnibus_service 'chef-server/nginx'
 
 include_recipe 'chef-reference::_hostsfile'

@@ -20,6 +20,33 @@ node.default['chef']['chef-server']['role'] = 'supermarket'
 topology = data_bag_item('chef_server', 'topology')
 oc_id_data = ChefReferenceHelpers.fetch_oc_id_data
 
+# Attempt to load a wildcard certificate secret. If it fails, continue
+# on and rely on the self-signed certs from `reconfigure`. We only
+# support wildcard certificates.
+begin
+  wildcard_cert = data_bag_item('secrets', 'wildcard-ssl')['data']
+rescue Net::HTTPServerException
+  Chef::Log.debug('Could not load data bag item secrets/wildcard-ssl, will default')
+  Chef::Log.debug('to self-signed SSL certificates from `ctl reconfigure`')
+  wildcard_cert = false
+end
+
+if wildcard_cert
+  directory '/var/opt/supermarket/ssl/ca' do
+    recursive true
+  end
+
+  wildcard_cert.keys.each do |ext|
+    next unless wildcard_cert[ext]
+
+    file "/var/opt/supermarket/ssl/ca/#{topology['supermarket_fqdn']}.#{ext}" do
+      content wildcard_cert[ext]
+      sensitive true
+      notifies :restart, 'omnibus_service[supermarket/nginx]'
+    end
+  end
+end
+
 directory '/etc/supermarket' do
   recursive true
 end
@@ -42,5 +69,7 @@ ingredient_config 'supermarket' do
   action :render
   notifies :reconfigure, 'chef_ingredient[supermarket]'
 end
+
+omnibus_service 'supermarket/nginx'
 
 include_recipe 'chef-reference::_hostsfile'

@@ -43,3 +43,12 @@ default-centos-71    Vagrant  ChefZero     Busser    Ssh        <Not Created>
 % kitchen test default-centos-71
 OUTPUT SNIPPED
 ```
+
+## Use Cases
+
+This directory contains various use case "scenarios."
+
+* [AWS (default)](./scenario-aws.md): Stand up the default cluster in AWS
+* [Alternative Chef Server](./scenario-alternative-chef-server.md): Use a Chef Server other than Chef Zero, e.g., Hosted Chef
+* [Custom Policies](./scenario-custom-policies.md): Customize the policies for using custom cookbooks, or set options for `chef provisioning` to change provisioning behavior
+* [Wildcard SSL Certificate](./scenario-wildcard-ssl.md): Include a wildcard SSL certificate instead of using self-signed certificates
