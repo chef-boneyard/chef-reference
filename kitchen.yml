@@ -11,7 +11,7 @@ provisioner:
 platforms:
   # TODO: (jtimberman) Add ubuntu later, MVP is CentOS 7
   # - name: ubuntu-14.04
-  - name: centos-7.1
+  - name: centos-7
 
 suites:
   - name: default
